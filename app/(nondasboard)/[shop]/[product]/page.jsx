@@ -14,15 +14,17 @@ const page = () => {
     (state) => state.product
   );
 
+  console.log(category);
+
   useEffect(() => {
-    if (product.category && !loading) {
+    if (product?.category) {
       dispatch(getProductByCategory(category));
     }
-  }, [dispatch, product]);
+  }, []);
 
   return (
     <section className="py-6 md:py-10">
-      {product.length === 0 ? (
+      {product.length === 0 || loading ? (
         <PageLoading /> // TODO : temporary only, Replace with proper loader later.
       ) : (
         <div className="container mx-auto space-y-8">

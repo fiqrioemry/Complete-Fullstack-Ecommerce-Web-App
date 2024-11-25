@@ -18,6 +18,7 @@ const initialState = {
   products: [],
   storeProduct: [],
   relatedProducts: [],
+  category: "",
   loading: false,
   success: false,
   failed: false,
@@ -57,6 +58,7 @@ export const productReducer = (state = initialState, action) => {
       return {
         ...state,
         product: action.payload.data,
+        category: action.payload.data.category,
         loading: false,
         success: true,
       };
