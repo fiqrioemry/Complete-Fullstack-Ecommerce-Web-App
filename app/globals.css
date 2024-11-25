@@ -2,20 +2,189 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@layer base {
+  body {
+    @apply font-primary bg-background text-primary leading-loose;
+  }
+  h1 {
+    @apply text-2xl font-semibold;
+  }
+  h2 {
+    @apply text-xl font-medium;
+  }
+  h3 {
+    @apply text-lg font-normal;
+  }
+  h4 {
+    @apply text-sm font-normal;
+  }
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  .flex-between {
+    @apply flex items-center justify-between;
+  }
+  .borders {
+    @apply border-2 border-primary;
+  }
+  .borders-t {
+    @apply border-t-2 border-primary;
+  }
+  .borders-b {
+    @apply border-b-2 border-primary;
+  }
+  .borders-tb {
+    @apply border-b-2 border-t-2 border-primary;
+  }
 
-@media (prefers-color-scheme: dark) {
+  .content-grid {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-4;
+  }
+  .content-flex {
+    @apply flex flex-wrap;
+  }
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --radius: 0.5rem;
+    --primary: rgb(31 41 55);
+    --secondary: rgb(55 65 81);
+    --accent: #1da1f2;
+    --accent-hover: #1877b4;
+    --background: #ffffff;
+    --foreground: #f5f5f5;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+  .dark {
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---- header section ----*/
+.header-margin {
+  @apply container mx-auto flex-between py-2;
+}
+.header-logo {
+  @apply hidden md:flex items-center space-x-2 tracking-[2px];
+}
+
+.header-logo-span {
+  @apply px-3 py-1 bg-primary text-background;
+}
+
+.header-search-dropdown {
+  @apply absolute w-full rounded-md p-4 borders bg-white top-[50px] z-30;
+}
+
+.header-search-margin {
+  @apply w-[250px] md:w-[300px] relative;
+}
+
+.header-search-input {
+  @apply px-2 py-1 w-full borders rounded-md;
+}
+
+/* ---- homepage section ---- */
+.home-margin {
+  @apply py-6 md:py-10 space-y-6 md:space-y-10;
+}
+
+/* homepage : category */
+.home-category-margin {
+  @apply container mx-auto space-y-6;
+}
+
+.home-category-image {
+  @apply h-[175px] flex-center;
+}
+
+/* homepage :recommend */
+.home-recommend-margin {
+  @apply container mx-auto space-y-6;
+}
+
+/* ========= end of home page section */
+
+/* auth page section [ login and register ] */
+
+.auth-page-image {
+  @apply border-2 w-full h-full flex-center;
+}
+.auth-form-margin {
+  @apply w-full md:w-1/2 px-4 py-4 space-y-2 text-center;
+}
+
+.auth-image-margin {
+  @apply hidden md:flex-center md:w-1/2;
+}
+
+.auth-form {
+  @apply space-y-4;
+}
+
+.auth-wrapper {
+  @apply space-y-4;
+}
+
+.auth-button {
+  @apply w-full flex-center rounded-md tracking-[2px];
+}
+
+.auth-title {
+  @apply flex-center text-2xl uppercase font-medium;
+}
+.auth-input {
+  @apply h-12 border-b-2 w-full outline-none mb-4 focus:border-primary;
+}
+
+.auth-loading {
+  @apply flex-center bg-primary w-full hover:bg-primary rounded-md cursor-not-allowed;
+}
+
+/* ===== end of auth page section */
+.product-card-image {
+  @apply flex-center borders h-[200px] overflow-hidden;
+}
+
+/* product section */
+/* product : product-detail */
+.product-detail-parent {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-x-4 space-y-4 md:space-y-0;
+}
+.product-detail-image {
+  @apply w-full flex flex-wrap space-y-2 md:space-y-0;
+}
+
+.product-detail-multiple {
+  @apply w-full space-y-0 space-x-4 md:space-x-0 md:space-y-4 flex mt-4 md:mt-0 order-2 md:order-none md:flex-col md:w-[20%] justify-start;
+}
+
+.detail-single-image {
+  @apply w-full md:h-auto h-[350px] md:w-[80%] borders flex-center;
+}
+
+.detail-multiple-image {
+  @apply w-[80px] h-[80px] borders;
+}
+
+/* product : review comment */
+
+.product-review-margin {
+  @apply h-[400px] borders-tb overflow-y-scroll py-6 space-y-6;
+}
+
+.product-review-box {
+  @apply border border-primary min-h-[180px] p-4;
 }
