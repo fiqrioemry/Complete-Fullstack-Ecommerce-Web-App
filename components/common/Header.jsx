@@ -33,7 +33,7 @@ const Header = () => {
         </div>
 
         <div className="flex-between space-x-4">
-          <ShoppingCart />
+          <ShoppingCart user={user} />
           {user && <UserMenuDropDown />}
           {!user && (
             <ButtonElement

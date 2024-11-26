@@ -18,10 +18,11 @@ import callApi from "../../services/index";
 export const getCartItem = () => async (dispatch) => {
   try {
     dispatch({ type: GET_CART_PROCESS });
+    console.log("PRINT LOG INFO: GETTING CART");
 
-    const response = await callApi.post(`/api/cart`);
+    const response = await callApi.get(`/api/cart`);
 
-    dispatch({ type: GET_CART_SUCCESS, payload: response.data.message });
+    dispatch({ type: GET_CART_SUCCESS, payload: response.data.data });
   } catch (error) {
     dispatch({ type: GET_CART_FAILED, payload: error.data.message });
   }

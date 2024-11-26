@@ -10,7 +10,7 @@ import Header from "@/components/common/Header";
 import Footer from "@/components/common/Footer";
 import { ProductProvider } from "./ProductProvider";
 import React, { createContext, useContext, useState } from "react";
-import { Share } from "lucide-react";
+import { CartProvider } from "./CartProvider";
 
 const GlobalContext = createContext();
 
@@ -37,9 +37,11 @@ export const GlobalProvider = ({ children }) => {
       <GlobalContext.Provider value={{ pathname, handleNotif, target }}>
         <AuthProvider>
           <ProductProvider>
-            {!ExcludeNavbarFooter.includes(pathname) && <Header />}
-            {children}
-            {!ExcludeNavbarFooter.includes(pathname) && <Footer />}
+            <CartProvider>
+              {!ExcludeNavbarFooter.includes(pathname) && <Header />}
+              {children}
+              {!ExcludeNavbarFooter.includes(pathname) && <Footer />}
+            </CartProvider>
           </ProductProvider>
         </AuthProvider>
       </GlobalContext.Provider>

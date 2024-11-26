@@ -5,7 +5,13 @@ import QuantityElement from "../element/QuantityElement";
 import { useCart } from "@/provider/CartProvider";
 
 const ProductDetails = ({ product }) => {
-  const { handleDecrease, handleIncrease, cartItem } = useCart();
+  const {
+    handleDecrease,
+    handleIncrease,
+    handleCheckout,
+    handleAddCart,
+    cartItem,
+  } = useCart();
 
   return (
     <div className="product-detail-parent">
@@ -35,24 +41,34 @@ const ProductDetails = ({ product }) => {
       </div>
 
       {/* product description */}
-      <div>
-        <h2>{product.title}</h2>
-        <h3>Rp. {product.price}</h3>
-        <p>{product.description}</p>
-        <div>
-          <QuantityElement
-            handleDecrease={handleDecrease}
-            handleIncrease={handleIncrease}
-            quantity={cartItem.quantity}
-            stock={product.stock}
-          />
-          <div>{product.stock}</div>
+      <div className="flex flex-col justify-between">
+        <div className="h-full max-h-[200px]">
+          <h2>{product.title}</h2>
+          <h3>Rp. {product.price}</h3>
+          <p>{product.description}</p>
         </div>
-        <div className="space-y-2">
-          <Button className="w-full">ADD TO CART</Button>
-          <Button variant="primary" className="w-full">
-            CHECKOUT
-          </Button>
+        <div>
+          <div className="flex space-x-4 py-4">
+            <QuantityElement
+              handleDecrease={handleDecrease}
+              handleIncrease={handleIncrease}
+              quantity={cartItem.quantity}
+              stock={product.stock}
+            />
+            <div>Maximum : {product.stock} Pieces</div>
+          </div>
+          <div className="space-y-2">
+            <Button onClick={handleAddCart} className="w-full">
+              ADD TO CART
+            </Button>
+            <Button
+              onClick={handleCheckout}
+              variant="primary"
+              className="w-full"
+            >
+              CHECKOUT
+            </Button>
+          </div>
         </div>
       </div>
     </div>

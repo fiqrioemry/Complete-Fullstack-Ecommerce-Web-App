@@ -27,7 +27,7 @@ export const cartReducer = (state = initialState, action) => {
     case GET_CART_SUCCESS: {
       return {
         ...state,
-        cart: action.payload.data,
+        cart: action.payload.cart,
         loading: false,
         success: true,
         message: action.payload.message,
