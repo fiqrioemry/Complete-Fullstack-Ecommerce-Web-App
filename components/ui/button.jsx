@@ -14,7 +14,8 @@ const buttonVariants = cva(
 
         primary:
           "bg-primary  hover:bg-white hover:text-primary text-background tracking-[1.5px]",
-        secondary: "",
+        secondary:
+          "bg-white hover:bg-primary hover:text-background text-primary  tracking-[1.5px]",
       },
       size: {
         default: "py-2 px-4",

@@ -9,22 +9,31 @@ import ProductDetails from "@/components/product/ProductDetails";
 import RelatedProduct from "@/components/product/RelatedProduct";
 import PageNotFound from "@/app/not-found";
 import { usePathname } from "next/navigation";
+import Breadcrumb from "@/components/common/Breadcrumb";
 
 const page = () => {
   const pathname = usePathname();
-  const { product, failed } = useSelector((state) => state.product);
-  const [storeURL, productURL] = pathname.trim().split("/").slice(1, 3);
+  const { product, failed, loading } = useSelector((state) => state.product);
+  const pathURL = ["home", ...pathname.trim().split("/").slice(1)];
+
+  if (loading && !product) {
+    return <PageLoading />;
+  }
+
+  if (
+    failed ||
+    !product ||
+    product.length === 0 ||
+    product.storeSlug !== pathURL[1] ||
+    product.slug !== pathURL[2]
+  ) {
+    return <PageNotFound />;
+  }
 
   return (
     <section className="py-6 md:py-10">
       <div className="container mx-auto space-y-8">
-        <div>
-          <h4>
-            home /
-            <Link href={`/${product.storeSlug}`}> {product.storeSlug} </Link> /
-            {product.slug}
-          </h4>
-        </div>
+        <Breadcrumb links={pathURL} />
         <ProductDetails product={product} />
         <ReviewComents reviews={product.reviews} />
         <RelatedProduct category={product.category} />

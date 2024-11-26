@@ -7,6 +7,7 @@ import ImageElement from "../element/ImageElement";
 
 const ProductCard = ({ products }) => {
   const router = useRouter();
+
   return (
     <>
       {products?.map((product, index) => (
@@ -22,6 +23,7 @@ const ProductCard = ({ products }) => {
           <h4>Rp. {product.price}</h4>
           <div>
             <Button
+              variant="primary"
               onClick={() =>
                 router.push(`/${product.storeSlug}/${product.slug}`)
               }

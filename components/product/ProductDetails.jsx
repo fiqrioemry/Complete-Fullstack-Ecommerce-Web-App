@@ -34,12 +34,14 @@ const ProductDetails = ({ product }) => {
       {/* product description */}
       <div>
         <h2>{product.title}</h2>
-        <h3>RP. {product.price}</h3>
+        <h3>Rp. {product.price}</h3>
         <p>{product.description}</p>
         <QuantityElement />
         <div className="space-y-2">
           <Button className="w-full">ADD TO CART</Button>
-          <Button className="w-full">CHECKOUT</Button>
+          <Button variant="primary" className="w-full">
+            CHECKOUT
+          </Button>
         </div>
       </div>
     </div>
