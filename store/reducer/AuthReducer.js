@@ -46,7 +46,6 @@ export const authReducer = (state = initialState, action) => {
 
     // * REGISTER ------------------------------------------------------------
 
-    case LOGOUT_PROCESS:
     case REGISTER_PROCESS:
       return { ...state, loading: true, message: "" };
 

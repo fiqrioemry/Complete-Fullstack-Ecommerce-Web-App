@@ -2,18 +2,29 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-const QuantityElement = () => {
+const QuantityElement = ({
+  handleIncrease,
+  handleDecrease,
+  quantity,
+  stock,
+}) => {
   return (
-    <div className="py-2">
-      <div className="flex">
-        <Button variant="primary">
-          <FaMinus />
-        </Button>
-        <div className="w-[75px] flex-center borders-tb">1</div>
-        <Button variant="primary">
-          <FaPlus />
-        </Button>
-      </div>
+    <div className="flex">
+      <Button
+        onClick={handleDecrease}
+        variant="primary"
+        disabled={quantity === 1}
+      >
+        <FaMinus />
+      </Button>
+      <div className="w-[75px] flex-center borders-tb">{quantity}</div>
+      <Button
+        onClick={handleIncrease}
+        variant="primary"
+        disabled={quantity === stock}
+      >
+        <FaPlus />
+      </Button>
     </div>
   );
 };

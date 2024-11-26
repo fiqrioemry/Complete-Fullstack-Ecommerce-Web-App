@@ -2,8 +2,11 @@
 import { Button } from "@/components/ui/button";
 import ImageElement from "../element/ImageElement";
 import QuantityElement from "../element/QuantityElement";
+import { useCart } from "@/provider/CartProvider";
 
 const ProductDetails = ({ product }) => {
+  const { handleDecrease, handleIncrease, cartItem } = useCart();
+
   return (
     <div className="product-detail-parent">
       {/* product images */}
@@ -36,7 +39,15 @@ const ProductDetails = ({ product }) => {
         <h2>{product.title}</h2>
         <h3>Rp. {product.price}</h3>
         <p>{product.description}</p>
-        <QuantityElement />
+        <div>
+          <QuantityElement
+            handleDecrease={handleDecrease}
+            handleIncrease={handleIncrease}
+            quantity={cartItem.quantity}
+            stock={product.stock}
+          />
+          <div>{product.stock}</div>
+        </div>
         <div className="space-y-2">
           <Button className="w-full">ADD TO CART</Button>
           <Button variant="primary" className="w-full">
