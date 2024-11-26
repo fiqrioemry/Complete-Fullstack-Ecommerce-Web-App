@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 const ButtonElement = ({
   title,
   style,
+  name = "",
   type = null,
   loading,
   handleClick = null,
@@ -14,8 +15,9 @@ const ButtonElement = ({
   return (
     <Button
       type={type}
+      name={name}
       variant={variant}
-      className={style}
+      className={`${loading ? "cursor-not-allowed" : ""} ${style}`}
       onClick={handleClick}
       disabled={loading}
     >
