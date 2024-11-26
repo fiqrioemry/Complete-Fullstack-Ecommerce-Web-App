@@ -19,7 +19,7 @@ const ReviewComents = ({ reviews }) => {
                 <div>
                   <div className="flex">
                     {[...Array(rating)].map((_, index) => (
-                      <FaRegStar />
+                      <FaRegStar key={index} />
                     ))}
                   </div>
                   <div>{review.customerName}</div>

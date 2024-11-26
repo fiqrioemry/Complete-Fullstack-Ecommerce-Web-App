@@ -3,7 +3,7 @@
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthRoute, initialInputState } from "@/config";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   reset,
   userLogin,
@@ -16,7 +16,6 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const router = useRouter();
-  const params = useParams();
   const pathname = usePathname();
   const dispatch = useDispatch();
   const [active, setActive] = useState(true);

@@ -1,18 +1,13 @@
 // ---- route path ----
-export const NavbarFooterRoute = [
-  "/",
-  "/users",
-  "/users/settings",
-  "/users/address",
-  "/users/transaction",
-  "/cart",
-  "/product/:id",
-  "/shop/product",
-  "/[shop]/[product]",
-  "/shop:",
-  "/shop:/product:",
-  "/:shop",
-  "/:shop/:product",
+
+export const ExcludeNavbarFooter = [
+  "/cart/shipment",
+  "/dashboard",
+  "/dashboard/admin",
+  "/dashboard/seller",
+  "/myshop",
+  "/login",
+  "/register",
 ];
 
 export const RestrictedRoute = ["/dashboard", "/dashboard/:path"];
@@ -77,7 +72,7 @@ export const categoryList = [
 export const initialInputState = {
   name: "",
   email: "",
+  search: "",
   password: "",
   passwordConfirm: "",
-  search: "",
 };

@@ -1,14 +1,22 @@
 import {
+  // all product
   GET_PRODUCT_PROCESS,
   GET_PRODUCT_SUCCESS,
   GET_PRODUCT_FAILED,
+  // product detail
   PRODUCT_DETAIL_PROCESS,
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DETAIL_FAILED,
+
+  // store product
   STORE_PRODUCT_PROCESS,
   STORE_PRODUCT_SUCCESS,
   STORE_PRODUCT_FAILED,
+
+  // product by category
+  PRODUCT_BY_CAT_PROCESS,
   PRODUCT_BY_CAT_SUCCESS,
+  PRODUCT_BY_CAT_FAILED,
 } from "../constant/ProductType";
 
 import callApi from "../../services/index";
@@ -37,13 +45,13 @@ export const getAllProducts =
 export const getProductDetail = (slug) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_PROCESS });
-    // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
-    setTimeout(async () => {
-      const response = await callApi.get(`/api/product/${slug}`);
 
-      dispatch({ type: PRODUCT_DETAIL_SUCCESS, payload: response.data });
-    }, 1500);
+    const response = await callApi.get(`/api/product/${slug}`);
+
+    console.log("PRINT LOG INFO:", response);
+    dispatch({ type: PRODUCT_DETAIL_SUCCESS, payload: response.data });
   } catch (error) {
+    console.log("PRINT LOG INFO ERROR:", error);
     dispatch({
       type: PRODUCT_DETAIL_FAILED,
       payload: error.response.data.message,
@@ -56,13 +64,9 @@ export const getAllStoreProducts = (slug) => async (dispatch) => {
   try {
     dispatch({ type: STORE_PRODUCT_PROCESS });
 
-    // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
-    setTimeout(async () => {
-      const response = await callApi.get(`/api/product/store/${slug}`);
+    const response = await callApi.get(`/api/product/store/${slug}`);
 
-      console.log(response);
-      dispatch({ type: STORE_PRODUCT_SUCCESS, payload: response.data });
-    }, 1500);
+    dispatch({ type: STORE_PRODUCT_SUCCESS, payload: response.data });
   } catch (error) {
     dispatch({
       type: STORE_PRODUCT_FAILED,
@@ -74,13 +78,14 @@ export const getAllStoreProducts = (slug) => async (dispatch) => {
 // 4. GET PRODUCT BY CATEGORY
 export const getProductByCategory = (category) => async (dispatch) => {
   try {
-    // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
-    setTimeout(async () => {
-      const response = await callApi.get(`/api/product/category/${category}`);
+    dispatch({ type: PRODUCT_BY_CAT_PROCESS });
+    const response = await callApi.get(`/api/product/category/${category}`);
 
-      dispatch({ type: PRODUCT_BY_CAT_SUCCESS, payload: response.data });
-    }, 1500);
+    dispatch({ type: PRODUCT_BY_CAT_SUCCESS, payload: response.data });
   } catch (error) {
-    console.log(error);
+    dispatch({
+      type: PRODUCT_BY_CAT_FAILED,
+      payload: error.response.data.message,
+    });
   }
 };

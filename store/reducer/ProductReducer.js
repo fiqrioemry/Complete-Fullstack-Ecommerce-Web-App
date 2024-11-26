@@ -8,17 +8,15 @@ import {
   STORE_PRODUCT_PROCESS,
   STORE_PRODUCT_SUCCESS,
   STORE_PRODUCT_FAILED,
+  PRODUCT_BY_CAT_PROCESS,
   PRODUCT_BY_CAT_SUCCESS,
-  RESET,
+  PRODUCT_BY_CAT_FAILED,
 } from "../constant/ProductType";
 
 const initialState = {
   total: 0,
-  product: [],
-  products: [],
-  storeProduct: [],
-  relatedProducts: [],
-  category: "",
+  product: null,
+  products: null,
   loading: false,
   success: false,
   failed: false,
@@ -34,18 +32,18 @@ export const productReducer = (state = initialState, action) => {
     case GET_PRODUCT_SUCCESS: {
       return {
         ...state,
+        success: true,
+        loading: false,
         products: action.payload.data,
         total: action.payload.totalProducts,
-        loading: false,
-        success: true,
       };
     }
 
     case GET_PRODUCT_FAILED:
       return {
         ...state,
-        loading: false,
         failed: true,
+        loading: false,
         message: action.payload,
       };
 
@@ -57,18 +55,17 @@ export const productReducer = (state = initialState, action) => {
     case PRODUCT_DETAIL_SUCCESS: {
       return {
         ...state,
-        product: action.payload.data,
-        category: action.payload.data.category,
-        loading: false,
         success: true,
+        loading: false,
+        product: action.payload.data,
       };
     }
 
     case PRODUCT_DETAIL_FAILED:
       return {
         ...state,
-        loading: false,
         failed: true,
+        loading: false,
         message: action.payload,
       };
 
@@ -80,35 +77,44 @@ export const productReducer = (state = initialState, action) => {
     case STORE_PRODUCT_SUCCESS: {
       return {
         ...state,
-        storeProduct: action.payload.data,
-        loading: false,
         success: true,
+        loading: false,
+        products: action.payload.data,
       };
     }
 
     case STORE_PRODUCT_FAILED:
       return {
         ...state,
-        loading: false,
         failed: true,
+        loading: false,
         message: action.payload,
       };
 
     // * GET RELATED PRODUCTS ------------------------------------------------------------
+
+    case PRODUCT_BY_CAT_PROCESS: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
     case PRODUCT_BY_CAT_SUCCESS: {
       return {
         ...state,
-        relatedProducts: action.payload.data,
+        success: true,
+        loading: false,
+        products: action.payload.data,
       };
     }
-
-    case RESET:
+    case PRODUCT_BY_CAT_FAILED: {
       return {
         ...state,
+        failed: true,
         loading: false,
-        failed: false,
-        success: false,
+        message: action.payload,
       };
+    }
 
     default:
       return state;

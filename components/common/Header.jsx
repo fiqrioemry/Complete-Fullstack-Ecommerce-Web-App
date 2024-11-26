@@ -7,10 +7,12 @@ import UserMenuDropDown from "./UserMenuDropdown";
 import InputElement from "../element/InputElement";
 import ButtonElement from "../element/ButtonElement";
 import { useSelector } from "react-redux";
+import { useAuth } from "@/provider/AuthProvider";
 
 const Header = () => {
   const router = useRouter();
-  const { user } = useSelector((state) => state.auth);
+  const { input } = useAuth();
+  const { user, handleChange } = useSelector((state) => state.auth);
   return (
     <header className="borders-b">
       <nav className="header-margin">
@@ -23,9 +25,9 @@ const Header = () => {
           <InputElement
             type="search"
             name="search"
-            value={null}
+            value={input.search}
             style="header-search-input"
-            onChange={null}
+            onChange={handleChange} // TODO : Change this
             placeholder="search product name"
           />
         </div>

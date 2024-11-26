@@ -9,14 +9,14 @@ const ProductDetails = ({ product }) => {
       {/* product images */}
       <div className="product-detail-image">
         <div className="product-detail-multiple">
-          {[...Array(4)].map((__, index) => {
+          {product.images?.map((image, index) => {
             return (
               <ImageElement
                 width={80}
                 height={80}
                 style="detail-multiple-image"
                 alt="detail_multiple_image"
-                path=""
+                path={image}
                 key={index}
               />
             );
@@ -27,7 +27,7 @@ const ProductDetails = ({ product }) => {
           height={350}
           style="detail-single-image"
           alt="detail_single_image"
-          path=""
+          path={product.images[0]}
         />
       </div>
 

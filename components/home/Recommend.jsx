@@ -15,7 +15,7 @@ const Recommend = () => {
     <section className="home-recommend-margin">
       <SectionHead title="recommend for you" />
       <div className="content-grid">
-        {products.length === 0 ? (
+        {!products ? (
           <ProductCardLoading />
         ) : (
           <ProductCard products={products} />

@@ -15,7 +15,7 @@ const ProductCard = ({ products }) => {
             width={200}
             height={200}
             style="product-card-image"
-            src={product.images}
+            path={product.images}
             alt="temporary"
           />
           <h4 className="font-medium">{product.title}</h4>

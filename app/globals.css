@@ -182,7 +182,7 @@
 /* product : review comment */
 
 .product-review-margin {
-  @apply h-[400px] borders-tb overflow-y-scroll py-6 space-y-6;
+  @apply max-h-[400px] borders-tb overflow-y-auto py-6 space-y-6;
 }
 
 .product-review-box {
