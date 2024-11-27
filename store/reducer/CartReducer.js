@@ -11,7 +11,6 @@ import {
   DELETE_CART_PROCESS,
   DELETE_CART_SUCCESS,
   DELETE_CART_FAILED,
-  RESET_STATUS,
 } from "../constant/CartType";
 
 const initialState = {
@@ -29,24 +28,22 @@ export const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: action.payload.cart,
-        loading: false,
       };
     }
 
     // * ADD CART, UPDATE CART, DELETE CART ------------------------------------------------------------
-    case GET_CART_PROCESS:
-    case ADD_CART_PROCESS:
     case UPDATE_CART_PROCESS:
     case DELETE_CART_PROCESS:
-      return { ...state, loading: true, message: "" };
+    case ADD_CART_PROCESS:
+      return { ...state, message: false, failed: false, loading: true };
 
     case ADD_CART_SUCCESS:
     case UPDATE_CART_SUCCESS:
     case DELETE_CART_SUCCESS: {
       return {
         ...state,
-        loading: false,
         success: true,
+        loading: false,
         message: action.payload,
       };
     }
@@ -57,18 +54,9 @@ export const cartReducer = (state = initialState, action) => {
     case DELETE_CART_FAILED:
       return {
         ...state,
-        loading: false,
         failed: true,
-        message: action.payload,
-      };
-
-    case RESET_STATUS:
-      return {
-        ...state,
         loading: false,
-        failed: false,
-        success: false,
-        message: "",
+        message: action.payload,
       };
 
     default:

@@ -13,9 +13,9 @@ const ProductDetails = ({ product }) => {
     handleCheckout,
     handleAddCart,
     cartItem,
+    loading,
   } = useCart();
-  const { loading, success, failed } = useSelector((state) => state.cart);
-  console.log("PRINT LOG INFO:", loading);
+
   return (
     <div className="product-detail-parent">
       {/* product images */}

@@ -11,7 +11,10 @@ export const CartProvider = ({ children }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
-  const { message, success, failed } = useSelector((state) => state.cart);
+  const { loading, message, success, failed } = useSelector(
+    (state) => state.cart
+  );
+
   const [cartItem, setCartItem] = useState({
     quantity: 1,
   });
@@ -33,9 +36,7 @@ export const CartProvider = ({ children }) => {
         router.push("/login");
       }, 1500);
     } else {
-      setTimeout(() => {
-        dispatch(addToCart(product.id, cartItem.quantity));
-      }, 2500);
+      dispatch(addToCart(product.id, cartItem.quantity));
     }
   };
 
@@ -47,13 +48,13 @@ export const CartProvider = ({ children }) => {
     if (user) {
       dispatch(getCartItem());
     }
-  }, [dispatch, user]);
+  }, [user, dispatch, success, message]);
 
   useEffect(() => {
     if (success) {
       toast.info(message);
     } else if (failed) {
-      toast.info(failed);
+      toast.error(message);
     }
   }, [dispatch, success, failed, message]);
 
@@ -65,6 +66,7 @@ export const CartProvider = ({ children }) => {
         handleCheckout,
         handleAddCart,
         cartItem,
+        loading,
       }}
     >
       {children}
