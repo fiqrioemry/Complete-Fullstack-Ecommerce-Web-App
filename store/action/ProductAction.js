@@ -48,10 +48,8 @@ export const getProductDetail = (slug) => async (dispatch) => {
 
     const response = await callApi.get(`/api/product/${slug}`);
 
-    console.log("PRINT LOG INFO:", response);
     dispatch({ type: PRODUCT_DETAIL_SUCCESS, payload: response.data });
   } catch (error) {
-    console.log("PRINT LOG INFO ERROR:", error);
     dispatch({
       type: PRODUCT_DETAIL_FAILED,
       payload: error.response.data.message,

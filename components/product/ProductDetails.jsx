@@ -1,10 +1,9 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import ImageElement from "../element/ImageElement";
-import QuantityElement from "../element/QuantityElement";
-import { useCart } from "@/provider/CartProvider";
-import ButtonElement from "../element/ButtonElement";
 import { useSelector } from "react-redux";
+import { useCart } from "@/provider/CartProvider";
+import ImageElement from "../element/ImageElement";
+import ButtonElement from "../element/ButtonElement";
+import QuantityElement from "../element/QuantityElement";
 
 const ProductDetails = ({ product }) => {
   const {
@@ -12,9 +11,9 @@ const ProductDetails = ({ product }) => {
     handleIncrease,
     handleCheckout,
     handleAddCart,
-    cartItem,
-    loading,
+    quantity,
   } = useCart();
+  const { loading } = useSelector((state) => state.cart);
 
   return (
     <div className="product-detail-parent">
@@ -55,7 +54,7 @@ const ProductDetails = ({ product }) => {
             <QuantityElement
               handleDecrease={handleDecrease}
               handleIncrease={handleIncrease}
-              quantity={cartItem.quantity}
+              quantity={quantity}
               stock={product.stock}
             />
             <div>Maximum : {product.stock} Pieces</div>

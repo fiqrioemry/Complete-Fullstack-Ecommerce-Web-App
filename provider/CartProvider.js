@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, getCartItem } from "@/store/action/CartAction";
 import React, { createContext, useContext, useEffect, useState } from "react";
@@ -7,26 +7,22 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
+  console.log("PRINT LOG INFO:");
   const router = useRouter();
   const dispatch = useDispatch();
+  const [quantity, setQuantity] = useState(1);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
-  const { loading, message, success, failed } = useSelector(
-    (state) => state.cart
-  );
-
-  const [cartItem, setCartItem] = useState({
-    quantity: 1,
-  });
+  const { message, success, failed } = useSelector((state) => state.cart);
 
   const handleIncrease = () => {
-    const updatedQuantity = Math.min(cartItem.quantity + 1, product.stock);
-    setCartItem((prevItem) => ({ ...prevItem, quantity: updatedQuantity }));
+    const updatedQuantity = Math.min(quantity + 1, product.stock);
+    setQuantity(updatedQuantity);
   };
 
   const handleDecrease = () => {
-    const updatedQuantity = Math.max(cartItem.quantity - 1, 0);
-    setCartItem((prevItem) => ({ ...prevItem, quantity: updatedQuantity }));
+    const updatedQuantity = Math.max(quantity - 1, 0);
+    setQuantity(updatedQuantity);
   };
 
   const handleAddCart = () => {
@@ -36,7 +32,7 @@ export const CartProvider = ({ children }) => {
         router.push("/login");
       }, 1500);
     } else {
-      dispatch(addToCart(product.id, cartItem.quantity));
+      dispatch(addToCart(product.id, quantity));
     }
   };
 
@@ -65,8 +61,7 @@ export const CartProvider = ({ children }) => {
         handleDecrease,
         handleCheckout,
         handleAddCart,
-        cartItem,
-        loading,
+        quantity,
       }}
     >
       {children}
