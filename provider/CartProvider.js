@@ -7,9 +7,9 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  console.log("PRINT LOG INFO:");
   const router = useRouter();
   const dispatch = useDispatch();
+  const pathname = usePathname();
   const [quantity, setQuantity] = useState(1);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
@@ -39,6 +39,10 @@ export const CartProvider = ({ children }) => {
   const handleCheckout = () => {
     toast.info("Please login to checkout");
   };
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [pathname]);
 
   useEffect(() => {
     if (user) {

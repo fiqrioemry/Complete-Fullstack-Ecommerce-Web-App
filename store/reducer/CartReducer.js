@@ -35,7 +35,13 @@ export const cartReducer = (state = initialState, action) => {
     case UPDATE_CART_PROCESS:
     case DELETE_CART_PROCESS:
     case ADD_CART_PROCESS:
-      return { ...state, message: false, failed: false, loading: true };
+      return {
+        ...state,
+        success: false,
+        failed: false,
+        loading: true,
+        message: "",
+      };
 
     case ADD_CART_SUCCESS:
     case UPDATE_CART_SUCCESS:
