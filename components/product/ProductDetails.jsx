@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import ImageElement from "../element/ImageElement";
 import QuantityElement from "../element/QuantityElement";
 import { useCart } from "@/provider/CartProvider";
+import ButtonElement from "../element/ButtonElement";
+import { useSelector } from "react-redux";
 
 const ProductDetails = ({ product }) => {
   const {
@@ -12,7 +14,8 @@ const ProductDetails = ({ product }) => {
     handleAddCart,
     cartItem,
   } = useCart();
-
+  const { loading, success, failed } = useSelector((state) => state.cart);
+  console.log("PRINT LOG INFO:", loading);
   return (
     <div className="product-detail-parent">
       {/* product images */}
@@ -58,16 +61,21 @@ const ProductDetails = ({ product }) => {
             <div>Maximum : {product.stock} Pieces</div>
           </div>
           <div className="space-y-2">
-            <Button onClick={handleAddCart} className="w-full">
-              ADD TO CART
-            </Button>
-            <Button
-              onClick={handleCheckout}
+            <ButtonElement
+              title="add to cart"
+              name="add"
+              loading={loading}
+              handleClick={handleAddCart}
+              style="w-full flex-center"
+            />
+
+            <ButtonElement
+              title="checkout"
+              name="checkout"
+              handleClick={handleCheckout}
+              style="w-full flex-center"
               variant="primary"
-              className="w-full"
-            >
-              CHECKOUT
-            </Button>
+            />
           </div>
         </div>
       </div>

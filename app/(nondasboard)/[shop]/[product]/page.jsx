@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import PageLoading from "@/components/common/PageLoading";
 import ReviewComents from "@/components/product/ReviewComents";
@@ -11,7 +10,7 @@ import PageNotFound from "@/app/not-found";
 import { usePathname } from "next/navigation";
 import Breadcrumb from "@/components/common/Breadcrumb";
 
-const page = () => {
+const Page = () => {
   const pathname = usePathname();
   const { product, failed, loading } = useSelector((state) => state.product);
   const pathURL = ["home", ...pathname.trim().split("/").slice(1)];
@@ -42,4 +41,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

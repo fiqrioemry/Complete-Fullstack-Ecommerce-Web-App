@@ -11,6 +11,7 @@ import {
   DELETE_CART_PROCESS,
   DELETE_CART_SUCCESS,
   DELETE_CART_FAILED,
+  RESET_STATUS,
 } from "../constant/CartType";
 
 import callApi from "../../services/index";
@@ -18,25 +19,32 @@ import callApi from "../../services/index";
 export const getCartItem = () => async (dispatch) => {
   try {
     dispatch({ type: GET_CART_PROCESS });
-    console.log("PRINT LOG INFO: GETTING CART");
 
     const response = await callApi.get(`/api/cart`);
 
     dispatch({ type: GET_CART_SUCCESS, payload: response.data.data });
   } catch (error) {
-    dispatch({ type: GET_CART_FAILED, payload: error.data.message });
+    dispatch({ type: GET_CART_FAILED, payload: error.message });
+  } finally {
+    dispatch({ type: RESET_STATUS });
   }
 };
 
-export const addToCart = (cartItem) => async (dispatch) => {
+export const addToCart = (productId, quantity) => async (dispatch) => {
   try {
     dispatch({ type: ADD_CART_PROCESS });
+    setTimeout(async () => {
+      const response = await callApi.post(`/api/cart/add`, {
+        productId,
+        quantity,
+      });
 
-    const response = await callApi.post(`/api/cart/add`, { cartItem });
-
-    dispatch({ type: ADD_CART_SUCCESS, payload: response.data.message });
+      dispatch({ type: ADD_CART_SUCCESS, payload: response.data.message });
+    }, 2000);
   } catch (error) {
     dispatch({ type: ADD_CART_FAILED, payload: error.data.message });
+  } finally {
+    dispatch({ type: RESET_STATUS });
   }
 };
 
