@@ -15,11 +15,16 @@ export const CartProvider = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [cartGroup, setCartGroup] = useState({});
   const [quantity, setQuantity] = useState(1);
+  const [cartIds, setCartIds] = useState([]);
   const [checkoutId, setCheckoutId] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
-  const { message, success, failed } = useSelector((state) => state.cart);
+  const { cart, message, success, failed } = useSelector(
+    (state) => state.cart || { cart: [] }
+  );
 
   // const handleCheck = (ids) => {
   //   const checked = ids.every((id) => checkoutId.includes(id));
@@ -32,14 +37,33 @@ export const CartProvider = ({ children }) => {
   //     setCheckoutId(checkoutId.push(newId));
   //   }
   // };
+  const groupByStore = () => {
+    const sorted = cart.reduce((acc, curr) => {
+      if (!acc[curr.storeName]) {
+        acc[curr.storeName] = [];
+      }
+      acc[curr.storeName].push(curr);
+      return acc;
+    }, {});
+    const ids = cart.map((item) => item.id);
+    setCartIds(ids);
+    setCartGroup(sorted);
+  };
+
+  const countTotalPrice = () => {
+    const filtered = cart.filter((item) => checkoutId.includes(item.id));
+    const total = filtered.reduce(
+      (acc, curr) => (acc += curr.price * curr.quantity),
+      0
+    );
+    setTotalPrice(total);
+  };
 
   const handleCheck = (ids) => {
     const isChecked = ids.every((id) => checkoutId.includes(id));
     if (isChecked) {
-      // Hapus ID dari checkoutId jika sudah dipilih
       setCheckoutId((prev) => prev.filter((item) => !ids.includes(item)));
     } else {
-      // Tambahkan ID ke checkoutId jika belum dipilih
       setCheckoutId((prev) => [
         ...prev,
         ...ids.filter((item) => !prev.includes(item)),
@@ -104,6 +128,12 @@ export const CartProvider = ({ children }) => {
     }
   }, [dispatch, success, failed, message]);
 
+  useEffect(() => {
+    if (cart?.length) {
+      groupByStore();
+      countTotalPrice();
+    }
+  }, [cart, checkoutId]);
   return (
     <CartContext.Provider
       value={{
@@ -115,6 +145,9 @@ export const CartProvider = ({ children }) => {
         quantity,
         handleCheck,
         checkoutId,
+        cartGroup,
+        cartIds,
+        totalPrice,
       }}
     >
       {children}
