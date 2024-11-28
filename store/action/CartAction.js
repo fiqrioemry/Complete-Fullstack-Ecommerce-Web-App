@@ -56,9 +56,9 @@ export const updateCartItem = (id, quantity) => async (dispatch) => {
 // DELETE PRODUCT FROM CART
 export const deleteCartItem = (id) => async (dispatch) => {
   try {
-    dispatch({ type: DELETE_CART_PROCESS });
+    dispatch({ type: DELETE_CART_PROCESS, payload: id });
 
-    const response = await callApi.post(`/api/cart/delete/${id}`);
+    const response = await callApi.delete(`/api/cart/delete/${id}`);
 
     dispatch({ type: DELETE_CART_SUCCESS, payload: response.data.message });
   } catch (error) {

@@ -16,6 +16,7 @@ import {
 const initialState = {
   cart: null,
   loading: false,
+  loadingItem: null,
   success: false,
   failed: false,
   message: "",
@@ -40,6 +41,7 @@ export const cartReducer = (state = initialState, action) => {
         success: false,
         failed: false,
         loading: true,
+        loadingItem: action.payload,
         message: "",
       };
 
@@ -50,6 +52,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         success: true,
         loading: false,
+        loadingItem: null,
         message: action.payload,
       };
     }
@@ -62,6 +65,7 @@ export const cartReducer = (state = initialState, action) => {
         ...state,
         failed: true,
         loading: false,
+        loadingItem: null,
         message: action.payload,
       };
 

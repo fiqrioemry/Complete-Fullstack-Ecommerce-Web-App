@@ -16,9 +16,14 @@ export const CartProvider = ({ children }) => {
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [quantity, setQuantity] = useState(1);
+  const [checkoutId, setCheckoutId] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
   const { message, success, failed } = useSelector((state) => state.cart);
+
+  const handleCheck = (ids) => {
+    console.log(typeof ids);
+  };
 
   const handleIncrease = (e) => {
     const { name, value } = e.target;
@@ -40,8 +45,7 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const handleDelete = (e) => {
-    const id = e.target.value;
+  const handleDelete = (id) => {
     dispatch(deleteCartItem(id));
   };
 
@@ -87,6 +91,8 @@ export const CartProvider = ({ children }) => {
         handleAddCart,
         handleDelete,
         quantity,
+        handleCheck,
+        checkoutId,
       }}
     >
       {children}

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
 import { useCart } from "@/provider/CartProvider";
 import React, { useState, useEffect } from "react";
 import SectionHead from "@/components/common/SectionHead";
@@ -13,8 +12,16 @@ import ButtonElement from "@/components/element/ButtonElement";
 
 const Page = () => {
   const [groupedCart, setGroupedCart] = useState({});
-  const { handleDecrease, handleIncrease, handleDelete } = useCart();
-  const { cart, loading } = useSelector((state) => state.cart || { cart: [] });
+  const {
+    handleDecrease,
+    handleIncrease,
+    handleDelete,
+    handleCheck,
+    checkoutId,
+  } = useCart();
+  const { cart, loadingItem } = useSelector(
+    (state) => state.cart || { cart: [] }
+  );
 
   const groupCartItem = () => {
     const sorted = cart.reduce((acc, curr) => {
@@ -49,55 +56,74 @@ const Page = () => {
                 <input type="checkbox" className="w-5 h-5" />
                 <div>Select All</div>
               </div>
-              {Object.entries(groupedCart).map(([storeName, products]) => (
-                <div className="py-2 px-4 borders space-y-4" key={storeName}>
-                  <div className="flex items-center space-x-4">
-                    <input type="checkbox" className="w-5 h-5" />
-                    <div>{storeName}</div>
-                  </div>
-                  {products.map((item) => (
-                    <div
-                      className="flex flex-row w-full space-x-4 "
-                      key={item.id}
-                    >
-                      <div>
-                        <input type="checkbox" className="w-5 h-5" />
-                      </div>
-                      <Image
-                        width={130}
-                        height={130}
-                        src={item.images}
-                        className="borders"
-                        alt={`Image of ${item.name}`}
+              {Object.entries(groupedCart).map(([storeName, products]) => {
+                const cartIds = products.map((item) => item.id);
+                return (
+                  <div className="py-2 px-4 borders space-y-4" key={storeName}>
+                    <div className="flex items-center space-x-4">
+                      <input
+                        type="checkbox"
+                        className="w-5 h-5"
+                        onChange={() => {
+                          handleCheck(cartIds);
+                        }}
+                        checked={cartIds.every((item) =>
+                          checkoutId.includes(item)
+                        )}
                       />
-
-                      <div className="w-full">
-                        <div className="text-md font-semibold">{item.name}</div>
-                        <div className="text-end">Rp. {item.price}</div>
-                        <div className="flex items-center justify-end space-x-4">
-                          <ButtonElement
-                            title={<FaTrashAlt />}
-                            style="block"
-                            value={item.id}
-                            loading={loading}
-                            handleClick={handleDelete}
-                            variant="primary"
-                          />
-
-                          <QuantityElement
-                            name="update"
-                            value={item.id}
-                            handleIncrease={handleIncrease}
-                            handleDecrease={handleDecrease}
-                            quantity={item.quantity}
-                            stock={item.stock}
+                      <div>{storeName}</div>
+                    </div>
+                    {products.map((item) => (
+                      <div
+                        className="flex flex-row w-full space-x-4 "
+                        key={item.id}
+                      >
+                        <div>
+                          <input
+                            type="checkbox"
+                            className="w-5 h-5"
+                            onChange={() => handleCheck(item.id)}
                           />
                         </div>
+                        <Image
+                          width={130}
+                          height={130}
+                          src={item.images}
+                          className="borders"
+                          alt={`Image of ${item.name}`}
+                        />
+
+                        <div className="w-full">
+                          <div className="text-md font-semibold">
+                            {item.name}
+                          </div>
+                          <div className="text-end">Rp. {item.price}</div>
+                          <div className="flex items-center justify-end space-x-4">
+                            <ButtonElement
+                              title={<FaTrashAlt />}
+                              style="block text-sm"
+                              loading={loadingItem === item.id}
+                              handleClick={() => {
+                                handleDelete(item.id);
+                              }}
+                              variant="primary"
+                            />
+
+                            <QuantityElement
+                              name="update"
+                              value={item.id}
+                              handleIncrease={handleIncrease}
+                              handleDecrease={handleDecrease}
+                              quantity={item.quantity}
+                              stock={item.stock}
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
 
