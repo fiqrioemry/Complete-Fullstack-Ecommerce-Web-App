@@ -21,8 +21,30 @@ export const CartProvider = ({ children }) => {
   const { product } = useSelector((state) => state.product);
   const { message, success, failed } = useSelector((state) => state.cart);
 
+  // const handleCheck = (ids) => {
+  //   const checked = ids.every((id) => checkoutId.includes(id));
+  //   if (checked) {
+  //     const result = checkoutId.filter((item) => !ids.includes(item));
+  //     setCheckoutId(result);
+  //   } else {
+  //     const result = ids.filter((item) => !checkoutId.includes(item));
+  //     const newId = Number(result);
+  //     setCheckoutId(checkoutId.push(newId));
+  //   }
+  // };
+
   const handleCheck = (ids) => {
-    console.log(typeof ids);
+    const isChecked = ids.every((id) => checkoutId.includes(id));
+    if (isChecked) {
+      // Hapus ID dari checkoutId jika sudah dipilih
+      setCheckoutId((prev) => prev.filter((item) => !ids.includes(item)));
+    } else {
+      // Tambahkan ID ke checkoutId jika belum dipilih
+      setCheckoutId((prev) => [
+        ...prev,
+        ...ids.filter((item) => !prev.includes(item)),
+      ]);
+    }
   };
 
   const handleIncrease = (e) => {
