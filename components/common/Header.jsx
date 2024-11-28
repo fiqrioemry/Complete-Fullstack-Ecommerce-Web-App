@@ -2,12 +2,12 @@
 
 import React from "react";
 import ShoppingCart from "./ShoppingCart";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/provider/AuthProvider";
 import UserMenuDropDown from "./UserMenuDropdown";
 import InputElement from "../element/InputElement";
 import ButtonElement from "../element/ButtonElement";
-import { useSelector } from "react-redux";
-import { useAuth } from "@/provider/AuthProvider";
 
 const Header = () => {
   const router = useRouter();
@@ -27,7 +27,7 @@ const Header = () => {
             name="search"
             value={input.search}
             style="header-search-input"
-            onChange={handleChange} // TODO : Change this
+            onChange={handleChange} // TODO : features not yet available
             placeholder="search product name"
           />
         </div>

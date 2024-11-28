@@ -43,6 +43,7 @@ const ShoppingCart = ({ user }) => {
               <div className=" flex-between py-2 px-2">
                 <h4>Shopping Cart</h4>
                 {/* // TODO : Popover stay open when changing path */}
+
                 <Link href="/cart">see detail</Link>
               </div>
             </div>

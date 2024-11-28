@@ -1,6 +1,8 @@
+"use client";
+
 import { toast } from "react-toastify";
-import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import { usePathname, useRouter } from "next/navigation";
 import {
   addToCart,
   deleteCartItem,
@@ -13,12 +15,12 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const pathname = usePathname();
-  const [totalPrice, setTotalPrice] = useState(0);
-  const [cartGroup, setCartGroup] = useState({});
-  const [quantity, setQuantity] = useState(1);
+  const dispatch = useDispatch();
   const [cartIds, setCartIds] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+  const [cartGroup, setCartGroup] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
   const [checkoutId, setCheckoutId] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
@@ -26,36 +28,20 @@ export const CartProvider = ({ children }) => {
     (state) => state.cart || { cart: [] }
   );
 
-  // const handleCheck = (ids) => {
-  //   const checked = ids.every((id) => checkoutId.includes(id));
-  //   if (checked) {
-  //     const result = checkoutId.filter((item) => !ids.includes(item));
-  //     setCheckoutId(result);
-  //   } else {
-  //     const result = ids.filter((item) => !checkoutId.includes(item));
-  //     const newId = Number(result);
-  //     setCheckoutId(checkoutId.push(newId));
-  //   }
-  // };
   const groupByStore = () => {
-    const sorted = cart.reduce((acc, curr) => {
-      if (!acc[curr.storeName]) {
-        acc[curr.storeName] = [];
-      }
+    const grouped = cart.reduce((acc, curr) => {
+      acc[curr.storeName] = acc[curr.storeName] || [];
       acc[curr.storeName].push(curr);
       return acc;
     }, {});
-    const ids = cart.map((item) => item.id);
-    setCartIds(ids);
-    setCartGroup(sorted);
+    setCartGroup(grouped);
+    setCartIds(cart.map((item) => item.id));
   };
 
   const countTotalPrice = () => {
-    const filtered = cart.filter((item) => checkoutId.includes(item.id));
-    const total = filtered.reduce(
-      (acc, curr) => (acc += curr.price * curr.quantity),
-      0
-    );
+    const total = cart
+      .filter((item) => checkoutId.includes(item.id))
+      .reduce((acc, curr) => (acc += curr.price * curr.quantity), 0);
     setTotalPrice(total);
   };
 
@@ -71,62 +57,46 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  const handleIncrease = (e) => {
-    const { name, value } = e.target;
-    if (name === "update") {
-      dispatch(updateCartItem(value, 1));
-    } else {
-      const updatedQuantity = Math.min(quantity + 1, product.stock);
-      setQuantity(updatedQuantity);
-    }
-  };
-
-  const handleDecrease = (e) => {
-    const { name, value } = e.target;
-    if (name === "update") {
-      dispatch(updateCartItem(value, -1));
-    } else {
-      const updatedQuantity = Math.max(quantity - 1, 0);
-      setQuantity(updatedQuantity);
-    }
-  };
-
-  const handleDelete = (id) => {
-    dispatch(deleteCartItem(id));
-  };
-
   const handleAddCart = () => {
     if (!user) {
       toast.error("Please login to continue shopping");
-      setTimeout(() => {
-        router.push("/login");
-      }, 1500);
+      setTimeout(() => router.push("/login"), 1500);
     } else {
       dispatch(addToCart(product.id, quantity));
     }
   };
+
+  const handleIncrease = (e) => {
+    if (e.target.name === "update") {
+      dispatch(updateCartItem(e.target.value, 1));
+    } else {
+      setQuantity((prev) => Math.min(prev + 1, product.stock));
+    }
+  };
+
+  const handleDecrease = (e) => {
+    if (e.target.name === "update") {
+      dispatch(updateCartItem(e.target.value, -1));
+    } else {
+      setQuantity((prev) => Math.max(prev - 1, 1));
+    }
+  };
+
+  const handleDelete = (id) => dispatch(deleteCartItem(id));
 
   const handleCheckout = () => {
     toast.info("Please login to checkout");
   };
 
   useEffect(() => {
-    setQuantity(1);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (user) {
-      dispatch(getCartItem());
-    }
+    if (user) dispatch(getCartItem());
   }, [user, dispatch, success, message]);
 
   useEffect(() => {
-    if (success && message !== "") {
-      toast.info(message);
-    } else if (failed && message !== "") {
-      toast.error(message);
+    if (message) {
+      toast[success ? "info" : "error"](message);
     }
-  }, [dispatch, success, failed, message]);
+  }, [message, success, failed]);
 
   useEffect(() => {
     if (cart?.length) {
@@ -134,6 +104,11 @@ export const CartProvider = ({ children }) => {
       countTotalPrice();
     }
   }, [cart, checkoutId]);
+
+  useEffect(() => {
+    setQuantity(1);
+  }, [pathname]);
+
   return (
     <CartContext.Provider
       value={{

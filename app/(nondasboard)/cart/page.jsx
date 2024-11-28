@@ -1,15 +1,16 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
-import { useCart } from "@/provider/CartProvider";
-import React from "react";
-import SectionHead from "@/components/common/SectionHead";
-import PageLoading from "@/components/common/PageLoading";
-import QuantityElement from "@/components/element/QuantityElement";
-import ButtonElement from "@/components/element/ButtonElement";
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/provider/CartProvider";
+import PageLoading from "@/components/common/PageLoading";
+import SectionHead from "@/components/common/SectionHead";
+import ButtonElement from "@/components/element/ButtonElement";
+import QuantityElement from "@/components/element/QuantityElement";
+import AlternativePage from "@/components/common/AlternativePage";
 
 const Page = () => {
   const {
@@ -22,16 +23,22 @@ const Page = () => {
     cartIds,
     totalPrice,
   } = useCart();
-  const { loadingItem } = useSelector((state) => state.cart);
+  const { cart, loading, loadingItem } = useSelector((state) => state.cart);
 
-  if (!cartGroup || Object.keys(cartGroup).length === 0) {
+  if (loading && !cartGroup) {
     return <PageLoading />;
+  }
+
+  if (!cart) {
+    return (
+      <AlternativePage title="your cart is empty" button="Shop now" path="/" />
+    );
   }
 
   return (
     <section className="py-12">
       <div className="cart-margin">
-        <SectionHead title="Your Cart" />
+        <SectionHead title="your cart" />
         <div className="flex flex-wrap">
           {/* Shopping cart */}
           <div className=" cart-shopping-detail">
@@ -81,9 +88,7 @@ const Page = () => {
                           alt={`Image of ${item.name}`}
                         />
                         <div className="w-full">
-                          <div className="text-md font-semibold">
-                            {item.name}
-                          </div>
+                          <h2>{item.name}</h2>
                           <div className="text-end">Rp. {item.price}</div>
                           <div className="flex items-center justify-end space-x-4">
                             <ButtonElement
@@ -112,8 +117,8 @@ const Page = () => {
           </div>
 
           {/* Shopping summary */}
-          <div className="cart-shopping-summary">
-            <div className="borders flex flex-col justify-between h-[200px] px-4 py-4">
+          <div className="shopping-sumary-margin">
+            <div className="shopping-summary-wrapper">
               <div className="space-y-4">
                 <h2>Shopping Summary</h2>
                 <h3>Rp. {totalPrice}</h3>
@@ -123,12 +128,12 @@ const Page = () => {
                 <Button
                   variant="primary"
                   className={`${
-                    checkoutId.length === 0
+                    !checkoutId.length
                       ? "bg-gray-400 border-gray-400 hover:bg-gray-400 hover:text-white cursor-not-allowed"
                       : ""
                   }
                   w-full`}
-                  disabled={checkoutId.length === 0}
+                  disabled={!checkoutId.length}
                 >
                   Make a Purchase
                 </Button>
