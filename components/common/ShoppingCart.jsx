@@ -26,15 +26,11 @@ const ShoppingCart = ({ user }) => {
       </PopoverTrigger>
       {!user ? (
         <PopoverContent className="w-80 bg-background">
-          <div className="h-[250px] flex-center">
-            CART EMPTY (USER NOT LOGIN)
-          </div>
+          <div className="h-[250px] flex-center">LOGIN TO SEE CART</div>
         </PopoverContent>
       ) : !cart ? (
         <PopoverContent className="w-[350px] bg-background">
-          <div className="h-[250px] flex-center">
-            CART IS EMPTY (USER LOGIN)
-          </div>
+          <div className="h-[250px] flex-center">CART IS EMPTY</div>
         </PopoverContent>
       ) : (
         <PopoverContent className="w-[350px] bg-background">

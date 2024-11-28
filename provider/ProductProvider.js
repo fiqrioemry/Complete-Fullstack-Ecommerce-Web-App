@@ -1,8 +1,7 @@
 "use client";
 
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { useParams, usePathname } from "next/navigation";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
