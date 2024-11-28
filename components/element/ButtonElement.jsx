@@ -9,6 +9,7 @@ const ButtonElement = ({
   name = "",
   type = null,
   loading,
+  value = "",
   handleClick = null,
   variant = "primary",
 }) => {
@@ -16,6 +17,7 @@ const ButtonElement = ({
     <Button
       type={type}
       name={name}
+      value={value}
       variant={variant}
       className={`${loading ? "cursor-not-allowed" : ""} ${style}`}
       onClick={handleClick}

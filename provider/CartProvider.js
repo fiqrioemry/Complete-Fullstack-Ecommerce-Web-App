@@ -1,7 +1,12 @@
 import { toast } from "react-toastify";
 import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, getCartItem } from "@/store/action/CartAction";
+import {
+  addToCart,
+  deleteCartItem,
+  getCartItem,
+  updateCartItem,
+} from "@/store/action/CartAction";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
@@ -15,14 +20,29 @@ export const CartProvider = ({ children }) => {
   const { product } = useSelector((state) => state.product);
   const { message, success, failed } = useSelector((state) => state.cart);
 
-  const handleIncrease = () => {
-    const updatedQuantity = Math.min(quantity + 1, product.stock);
-    setQuantity(updatedQuantity);
+  const handleIncrease = (e) => {
+    const { name, value } = e.target;
+    if (name === "update") {
+      dispatch(updateCartItem(value, 1));
+    } else {
+      const updatedQuantity = Math.min(quantity + 1, product.stock);
+      setQuantity(updatedQuantity);
+    }
   };
 
-  const handleDecrease = () => {
-    const updatedQuantity = Math.max(quantity - 1, 0);
-    setQuantity(updatedQuantity);
+  const handleDecrease = (e) => {
+    const { name, value } = e.target;
+    if (name === "update") {
+      dispatch(updateCartItem(value, -1));
+    } else {
+      const updatedQuantity = Math.max(quantity - 1, 0);
+      setQuantity(updatedQuantity);
+    }
+  };
+
+  const handleDelete = (e) => {
+    const id = e.target.value;
+    dispatch(deleteCartItem(id));
   };
 
   const handleAddCart = () => {
@@ -51,9 +71,9 @@ export const CartProvider = ({ children }) => {
   }, [user, dispatch, success, message]);
 
   useEffect(() => {
-    if (success) {
+    if (success && message !== "") {
       toast.info(message);
-    } else if (failed) {
+    } else if (failed && message !== "") {
       toast.error(message);
     }
   }, [dispatch, success, failed, message]);
@@ -65,6 +85,7 @@ export const CartProvider = ({ children }) => {
         handleDecrease,
         handleCheckout,
         handleAddCart,
+        handleDelete,
         quantity,
       }}
     >

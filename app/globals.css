@@ -188,3 +188,18 @@
 .product-review-box {
   @apply border border-primary min-h-[180px] p-4;
 }
+
+/* cart section */
+
+.cart-margin {
+  @apply container mx-auto space-y-4;
+}
+.cart-shopping-detail {
+  @apply order-2 w-full md:order-1 md:w-[70%] pr-0 md:pr-6;
+}
+.cart-detail-head {
+  @apply py-2 px-4 borders flex items-center space-x-4;
+}
+.cart-shopping-summary {
+  @apply order-1 mb-2 w-full md:w-[30%];
+}
