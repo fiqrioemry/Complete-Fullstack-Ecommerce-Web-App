@@ -24,14 +24,12 @@ const Recommend = () => {
         {loading && <ProductCardLoading />}
       </div>
       {total >= limit && (
-        <div className="flex-center">
-          <ButtonElement
-            title="load more"
-            style={`${loading ? "cursor-not-allowed" : ""} w-full flex-center `}
-            handleClick={handleShowMore}
-            loading={loading}
-          />
-        </div>
+        <ButtonElement
+          title="load more"
+          style={`${loading ? "cursor-not-allowed" : ""} w-full flex-center `}
+          handleClick={handleShowMore}
+          loading={loading}
+        />
       )}
     </section>
   );

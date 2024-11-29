@@ -31,12 +31,9 @@ const Page = () => {
 
   return (
     <main className="page-wrapper">
-      <section className="content-wrapper">
-        <Breadcrumb links={pathURL} />
-        <ProductDetails product={product} />
-        <ReviewComents reviews={product.reviews} />
-        <RelatedProduct category={product.category} />
-      </section>
+      <ProductDetails links={pathURL} product={product} />
+      <ReviewComents reviews={product.reviews} />
+      <RelatedProduct category={product.category} />
     </main>
   );
 };

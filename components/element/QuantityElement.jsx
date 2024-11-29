@@ -13,7 +13,9 @@ const QuantityElement = ({
   return (
     <div className="flex">
       <Button
-        className={`${quantity === 1 ? "cursor-not-allowed" : ""} block `}
+        className={`${
+          quantity === 1 ? "cursor-not-allowed" : ""
+        } block content-20 `}
         onClick={handleDecrease}
         name={name}
         value={value}
@@ -22,10 +24,12 @@ const QuantityElement = ({
       >
         <FaMinus className="pointer-events-none" />
       </Button>
-      <div className="w-[75px] flex-center borders-tb">{quantity}</div>
+      <div className="content-60">{quantity}</div>
       <Button
         onClick={handleIncrease}
-        className={`${quantity === stock ? "cursor-not-allowed" : ""} block `}
+        className={`${
+          quantity === stock ? "cursor-not-allowed" : ""
+        } block cotent-20 `}
         name={name}
         value={value}
         variant="primary"
