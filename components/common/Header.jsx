@@ -11,8 +11,8 @@ import ButtonElement from "../element/ButtonElement";
 
 const Header = () => {
   const router = useRouter();
-  const { input } = useAuth();
-  const { user, handleChange } = useSelector((state) => state.auth);
+  const { input, handleChange } = useAuth();
+  const { user } = useSelector((state) => state.auth);
   return (
     <header className="borders-b">
       <nav className="header-margin">

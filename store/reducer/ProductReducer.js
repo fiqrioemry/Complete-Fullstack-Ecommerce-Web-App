@@ -11,12 +11,16 @@ import {
   PRODUCT_BY_CAT_PROCESS,
   PRODUCT_BY_CAT_SUCCESS,
   PRODUCT_BY_CAT_FAILED,
+  SEARCH_PROCESS,
+  SEARCH_SUCCESS,
+  SEARCH_FAILED,
 } from "../constant/ProductType";
 
 const initialState = {
   total: 0,
-  product: null,
-  products: null,
+  search: null || [],
+  product: null || [],
+  products: null || [],
   loading: false,
   success: false,
   failed: false,
@@ -115,6 +119,26 @@ export const productReducer = (state = initialState, action) => {
         message: action.payload,
       };
     }
+
+    case SEARCH_PROCESS:
+      return { ...state, search: null || [], loading: true };
+
+    case SEARCH_SUCCESS: {
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        search: action.payload.data,
+      };
+    }
+
+    case SEARCH_FAILED:
+      return {
+        ...state,
+        failed: true,
+        loading: false,
+        message: action.payload,
+      };
 
     default:
       return state;

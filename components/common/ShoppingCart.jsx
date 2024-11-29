@@ -12,6 +12,7 @@ import ImageElement from "../element/ImageElement";
 
 const ShoppingCart = ({ user }) => {
   const { cart } = useSelector((state) => state.cart);
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -44,8 +45,8 @@ const ShoppingCart = ({ user }) => {
               </div>
             </div>
             <div className="px-2 h-[220px] overflow-y-scroll">
-              {cart.map((item, index) => (
-                <div className="flex py-2 space-x-4" key={index}>
+              {cart.map((item) => (
+                <div className="flex py-2 space-x-4" key={item.id}>
                   <ImageElement
                     width={80}
                     height={80}

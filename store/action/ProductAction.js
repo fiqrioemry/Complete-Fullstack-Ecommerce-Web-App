@@ -17,6 +17,11 @@ import {
   PRODUCT_BY_CAT_PROCESS,
   PRODUCT_BY_CAT_SUCCESS,
   PRODUCT_BY_CAT_FAILED,
+
+  // search product with query
+  SEARCH_PROCESS,
+  SEARCH_SUCCESS,
+  SEARCH_FAILED,
 } from "../constant/ProductType";
 
 import callApi from "../../services/index";
@@ -87,3 +92,35 @@ export const getProductByCategory = (category) => async (dispatch) => {
     });
   }
 };
+
+// 4. SEARCH PRODUCT WITH QUERY
+export const searchProducts =
+  (
+    search,
+    category,
+    minScore,
+    maxScore,
+    page,
+    minPrice,
+    maxPrice,
+    city,
+    sortBy,
+    order,
+    limit
+  ) =>
+  async (dispatch) => {
+    try {
+      dispatch({ type: SEARCH_PROCESS });
+
+      const response = await callApi.get(
+        `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
+      );
+
+      dispatch({ type: SEARCH_SUCCESS, payload: response.data });
+    } catch (error) {
+      dispatch({
+        type: SEARCH_FAILED,
+        payload: error.response.data.message,
+      });
+    }
+  };

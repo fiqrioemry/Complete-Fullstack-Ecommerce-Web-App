@@ -11,8 +11,10 @@ import SectionHead from "@/components/common/SectionHead";
 import ButtonElement from "@/components/element/ButtonElement";
 import QuantityElement from "@/components/element/QuantityElement";
 import AlternativePage from "@/components/common/AlternativePage";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const {
     handleDecrease,
     handleIncrease,
@@ -127,6 +129,7 @@ const Page = () => {
               <div>
                 <Button
                   variant="primary"
+                  onClick={() => router.push("/cart/shipment")}
                   className={`${
                     !checkoutId.length
                       ? "bg-gray-400 border-gray-400 hover:bg-gray-400 hover:text-white cursor-not-allowed"
