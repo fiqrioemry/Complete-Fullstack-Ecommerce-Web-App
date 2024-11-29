@@ -24,6 +24,7 @@ const initialState = {
   loading: false,
   success: false,
   failed: false,
+  message: "",
 };
 
 export const productReducer = (state = initialState, action) => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import React, {
   createContext,
@@ -17,18 +17,28 @@ import {
   searchProducts,
 } from "@/store/action/ProductAction";
 import { useAuth } from "./AuthProvider";
+import { debounce } from "lodash";
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
-  const { input, handleChange } = useAuth();
+  const router = useRouter();
   const params = useParams();
   const dispatch = useDispatch();
   const pathname = usePathname();
+  const { input, setInput } = useAuth();
   const [limit, setLimit] = useState(8);
-  const { search } = useSelector((state) => state.product);
+
   const handleShowMore = () => {
     setLimit((prevLimit) => prevLimit + 4);
+  };
+
+  const handleSearch = (path) => {
+    setInput((prevInput) => ({
+      ...prevInput,
+      search: null,
+    }));
+    router.push(`/search?q=${path}`);
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,12 +50,8 @@ export const ProductProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    if (input) {
-      debounceSearch(input.search);
-    } else if (search) {
-      console.log(search);
-    }
-  }, [dispatch, search, input, debounceSearch, handleChange]);
+    if (input.search) debounceSearch(input.search);
+  }, [input.search]);
 
   useEffect(() => {
     if (pathname === "/") {
@@ -57,7 +63,7 @@ export const ProductProvider = ({ children }) => {
     }
   }, [dispatch, limit, pathname, params]);
   return (
-    <ProductContext.Provider value={{ handleShowMore, limit }}>
+    <ProductContext.Provider value={{ handleShowMore, handleSearch, limit }}>
       {children}
     </ProductContext.Provider>
   );

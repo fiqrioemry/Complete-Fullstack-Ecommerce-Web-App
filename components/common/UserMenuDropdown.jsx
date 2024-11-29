@@ -21,7 +21,7 @@ const UserMenuDropDown = () => {
       <PopoverTrigger asChild>
         <div className="flex-center space-x-2">
           <FaUserCircle className="text-3xl cursor-pointer" />
-          <span>customer 01</span>
+          <span className="hidden md:block">customer 01</span>
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-auto space-y-6 bg-background">

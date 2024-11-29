@@ -1,18 +1,24 @@
 "use client";
 
 import React from "react";
-import ShoppingCart from "./ShoppingCart";
 import { useSelector } from "react-redux";
+import ShoppingCart from "./ShoppingCart";
+import { MdSearch } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import SearchDropdown from "./SearchDropdown";
 import { useAuth } from "@/provider/AuthProvider";
 import UserMenuDropDown from "./UserMenuDropdown";
 import InputElement from "../element/InputElement";
 import ButtonElement from "../element/ButtonElement";
+import { useProduct } from "@/provider/ProductProvider";
 
 const Header = () => {
   const router = useRouter();
+  const { handleSearch } = useProduct();
   const { input, handleChange } = useAuth();
   const { user } = useSelector((state) => state.auth);
+  const { search, loading, message } = useSelector((state) => state.product);
+
   return (
     <header className="borders-b">
       <nav className="header-margin">
@@ -22,13 +28,30 @@ const Header = () => {
         </div>
 
         <div className="header-search-margin">
-          <InputElement
-            type="search"
-            name="search"
-            value={input.search}
-            style="header-search-input"
-            onChange={handleChange} // TODO : features not yet available
-            placeholder="search product name"
+          <form
+            onSubmit={handleSearch(search.input)}
+            className="flex w-full items-center"
+          >
+            <InputElement
+              type="search"
+              name="search"
+              value={input.search}
+              style="header-search-input"
+              onChange={handleChange}
+              placeholder="search product name"
+            >
+              <button>
+                <MdSearch className="absolute right-5 cursor-pointer" />
+              </button>
+            </InputElement>
+          </form>
+
+          <SearchDropdown
+            input={input.search}
+            result={search}
+            status={loading}
+            message={message}
+            handleSearch={handleSearch}
           />
         </div>
 

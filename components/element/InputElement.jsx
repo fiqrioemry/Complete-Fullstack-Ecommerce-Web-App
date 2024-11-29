@@ -10,7 +10,7 @@ const InputElement = ({
   children,
 }) => {
   return (
-    <div className="flex-center relative ">
+    <div className="flex-center w-full relative ">
       <input
         type={type}
         name={name}

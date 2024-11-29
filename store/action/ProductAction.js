@@ -22,6 +22,7 @@ import {
   SEARCH_PROCESS,
   SEARCH_SUCCESS,
   SEARCH_FAILED,
+  RESET,
 } from "../constant/ProductType";
 
 import callApi from "../../services/index";
@@ -97,16 +98,16 @@ export const getProductByCategory = (category) => async (dispatch) => {
 export const searchProducts =
   (
     search,
-    category,
-    minScore,
-    maxScore,
-    page,
-    minPrice,
-    maxPrice,
-    city,
-    sortBy,
-    order,
-    limit
+    category = "",
+    minScore = "",
+    maxScore = "",
+    page = "",
+    minPrice = "",
+    maxPrice = "",
+    city = "",
+    sortBy = "",
+    order = "asc",
+    limit = "5"
   ) =>
   async (dispatch) => {
     try {
@@ -116,8 +117,11 @@ export const searchProducts =
         `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
       );
 
-      dispatch({ type: SEARCH_SUCCESS, payload: response.data });
+      setTimeout(() => {
+        dispatch({ type: SEARCH_SUCCESS, payload: response.data });
+      }, 1000);
     } catch (error) {
+      console.log("PRINT LOG INFO 1:", error);
       dispatch({
         type: SEARCH_FAILED,
         payload: error.response.data.message,

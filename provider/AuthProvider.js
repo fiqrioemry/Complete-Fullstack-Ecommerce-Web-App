@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         active,
         setActive,
+        setInput,
       }}
     >
       {children}
