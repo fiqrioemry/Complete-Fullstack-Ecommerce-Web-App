@@ -28,10 +28,7 @@ const Header = () => {
         </div>
 
         <div className="header-search-margin">
-          <form
-            onSubmit={handleSearch(search.input)}
-            className="flex w-full items-center"
-          >
+          <form onSubmit={handleSearch} className="flex w-full items-center">
             <InputElement
               type="search"
               name="search"

@@ -4,6 +4,7 @@ import { useCart } from "@/provider/CartProvider";
 import ImageElement from "../element/ImageElement";
 import ButtonElement from "../element/ButtonElement";
 import QuantityElement from "../element/QuantityElement";
+import Image from "next/image";
 
 const ProductDetails = ({ product }) => {
   const {
@@ -16,30 +17,33 @@ const ProductDetails = ({ product }) => {
   const { loading } = useSelector((state) => state.cart);
 
   return (
-    <div className="product-detail-parent">
+    <div className="content-grid-2">
       {/* product images */}
-      <div className="product-detail-image">
-        <div className="product-detail-multiple">
+      <div className="content-flex">
+        <div className="content-display-20">
           {product.images?.map((image, index) => {
             return (
-              <ImageElement
-                width={80}
-                height={80}
-                style="detail-multiple-image"
-                alt="detail_multiple_image"
-                path={image}
-                key={index}
-              />
+              <div className="image-wrapper" key={index}>
+                <Image
+                  width={80}
+                  height={80}
+                  src={image}
+                  alt="image_detail_thumbnail"
+                />
+              </div>
             );
           })}
         </div>
-        <ImageElement
-          width={350}
-          height={350}
-          style="detail-single-image"
-          alt="detail_single_image"
-          path={product.images[0]}
-        />
+        <div className="content-display-80">
+          <div className="image-wrapper">
+            <Image
+              width={450}
+              height={450}
+              src={product.images[0]}
+              alt="image_detail_thumbnail"
+            />
+          </div>
+        </div>
       </div>
 
       {/* product description */}

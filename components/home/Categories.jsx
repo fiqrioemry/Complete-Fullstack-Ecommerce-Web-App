@@ -4,7 +4,7 @@ import CategoryCard from "./CategoryCard";
 
 const Categories = () => {
   return (
-    <section className="home-category-margin">
+    <section className="content-wrapper">
       <SectionHead title="product categories" />
       <div className="content-grid">
         <CategoryCard />

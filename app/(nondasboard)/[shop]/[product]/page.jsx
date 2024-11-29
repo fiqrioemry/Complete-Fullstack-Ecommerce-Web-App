@@ -30,14 +30,14 @@ const Page = () => {
   }
 
   return (
-    <section className="py-6 md:py-10">
-      <div className="container mx-auto space-y-8">
+    <main className="page-wrapper">
+      <section className="content-wrapper">
         <Breadcrumb links={pathURL} />
         <ProductDetails product={product} />
         <ReviewComents reviews={product.reviews} />
         <RelatedProduct category={product.category} />
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };
 

@@ -222,3 +222,46 @@ input[type="search"] {
   -webkit-appearance: none; /* Untuk browser berbasis WebKit */
   appearance: none; /* Untuk kompatibilitas lintas browser */
 }
+
+/* new */
+.page-wrapper {
+  @apply container mx-auto py-6 md:py-10 space-y-6 md:space-y-10;
+}
+
+.content-wrapper {
+  @apply space-y-4 md:space-y-6;
+}
+
+.card-wrapper {
+  @apply borders p-2 space-y-2;
+}
+
+.image-wrapper {
+  @apply flex-center borders h-[200px] overflow-hidden;
+}
+
+.content-grid-2 {
+  @apply grid grid-cols-1 md:grid-cols-2 space-x-4 space-y-4 md:space-y-0 md:space-x-4;
+}
+.content-grid-4 {
+  @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 space-x-4 space-y-4;
+}
+
+.content-flex {
+  @apply w-full flex flex-wrap space-y-2 md:space-y-0;
+}
+
+.content-display-20 {
+  @apply w-full md:w-[20%] space-y-0 md:space-y-4 space-x-4 md:space-x-0 flex md:flex-col;
+}
+
+.content-display-80 {
+  @apply w-full md:w-[80%] space-y-0 md:space-y-4 space-x-4 md:space-x-0 flex md:flex-col;
+}
+.detail-single-image {
+  @apply w-full md:h-auto h-[350px] md:w-[80%] borders flex-center;
+}
+
+.detail-multiple-image {
+  @apply w-[80px] h-[80px] borders;
+}

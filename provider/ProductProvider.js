@@ -22,7 +22,6 @@ import { debounce } from "lodash";
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
-  const router = useRouter();
   const params = useParams();
   const dispatch = useDispatch();
   const pathname = usePathname();
@@ -33,12 +32,11 @@ export const ProductProvider = ({ children }) => {
     setLimit((prevLimit) => prevLimit + 4);
   };
 
-  const handleSearch = (path) => {
+  const handleSearch = () => {
     setInput((prevInput) => ({
       ...prevInput,
-      search: null,
+      search: "",
     }));
-    router.push(`/search?q=${path}`);
   };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

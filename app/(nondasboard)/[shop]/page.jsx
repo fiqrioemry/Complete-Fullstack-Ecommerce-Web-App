@@ -26,7 +26,7 @@ const Page = () => {
   }
 
   return (
-    <section className="py-12 mx-auto container">
+    <section className="page-wrapper">
       <div className="flex space-x-4 borders px-2 py-2">
         <div className="borders">
           <ImageElement

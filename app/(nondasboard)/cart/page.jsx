@@ -38,7 +38,7 @@ const Page = () => {
   }
 
   return (
-    <section className="py-12">
+    <section className="page-wrapper">
       <div className="cart-margin">
         <SectionHead title="your cart" />
         <div className="flex flex-wrap">

@@ -3,7 +3,7 @@ import Categories from "@/components/home/Categories";
 
 const Home = () => {
   return (
-    <main className="home-margin">
+    <main className="page-wrapper">
       <Categories />
       <Recommend />
     </main>

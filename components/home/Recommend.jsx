@@ -12,7 +12,7 @@ const Recommend = () => {
   const { products, loading, total } = useSelector((state) => state.product);
 
   return (
-    <section className="home-recommend-margin">
+    <section className="content-wrapper">
       <SectionHead title="recommend for you" />
       <div className="content-grid">
         {!products ? (
