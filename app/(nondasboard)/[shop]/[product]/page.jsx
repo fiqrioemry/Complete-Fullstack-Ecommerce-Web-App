@@ -8,7 +8,6 @@ import ProductDetails from "@/components/product/ProductDetails";
 import RelatedProduct from "@/components/product/RelatedProduct";
 import PageNotFound from "@/app/not-found";
 import { usePathname } from "next/navigation";
-import Breadcrumb from "@/components/common/Breadcrumb";
 
 const Page = () => {
   const pathname = usePathname();

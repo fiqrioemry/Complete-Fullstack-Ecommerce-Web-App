@@ -32,12 +32,7 @@ export const ProductProvider = ({ children }) => {
     setLimit((prevLimit) => prevLimit + 4);
   };
 
-  const handleSearch = () => {
-    setInput((prevInput) => ({
-      ...prevInput,
-      search: "",
-    }));
-  };
+  const handleSearch = () => {};
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(

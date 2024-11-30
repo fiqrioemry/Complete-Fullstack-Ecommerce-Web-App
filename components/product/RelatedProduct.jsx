@@ -15,16 +15,16 @@ const RelatedProduct = ({ category }) => {
     dispatch(getProductByCategory(category));
   }, []);
   return (
-    <div className="space-y-4">
+    <section className="section-wrapper">
       <SectionHead title="recommend for you" />
-      <div className="content-grid">
+      <div className="content-grid-4">
         {!products ? (
           <ProductCardLoading />
         ) : (
           <ProductCard products={products} />
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

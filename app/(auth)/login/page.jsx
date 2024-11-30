@@ -13,67 +13,69 @@ const Page = () => {
   const { handleLogin, handleChange, input, loading, active, setActive } =
     useAuth();
   return (
-    <section className="container mx-auto">
-      <div className="py-12 text-sm md:text-lg">
-        <Link href="/">Home</Link> <span> / login</span>
-      </div>
-
-      <div className="flex flex-wrap mb-12">
-        <div className="auth-image-margin ">
-          <ImageElement
-            style="auth-page-image"
-            width={300}
-            height={300}
-            path="/assets/empty_cart.png"
-            alt="empty_cart"
-          />
+    <main className="page-wrapper">
+      <section className="section-wrapper">
+        <div className="section-head">
+          <Link href="/">Home</Link> <span> / login</span>
         </div>
+        <div className="section-body">
+          <div className="content-grid-2">
+            <div className="hidden md:flex-center">
+              <ImageElement
+                style="image-wrapper"
+                width={300}
+                height={300}
+                path="/assets/empty_cart.png"
+                alt="empty_cart"
+              />
+            </div>
 
-        <div className="auth-form-margin">
-          <FormElement
-            formStyle="auth-form"
-            titleStyle="auth-title"
-            formTitle="Login page"
-            wrapperStyle="auth-wrapper"
-            handleSubmit={handleLogin}
-          >
-            <InputElement
-              type="text"
-              name="email"
-              style="auth-input"
-              value={input.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-            />
+            <div className="content-wrapper">
+              <FormElement
+                formStyle="content-wrapper"
+                titleStyle="h3"
+                formTitle="login page"
+                wrapperStyle="flex-col-between"
+                handleSubmit={handleLogin}
+              >
+                <InputElement
+                  type="text"
+                  name="email"
+                  style="input-1"
+                  value={input.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                />
 
-            <InputElement
-              name="password"
-              style="auth-input"
-              value={input.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              type={active ? "password" : "text"}
-            >
-              <HiddenElement hidden={active} setHidden={setActive} />
-            </InputElement>
+                <InputElement
+                  name="password"
+                  style="input-1"
+                  value={input.password}
+                  onChange={handleChange}
+                  placeholder="Enter your password"
+                  type={active ? "password" : "text"}
+                >
+                  <HiddenElement hidden={active} setHidden={setActive} />
+                </InputElement>
 
-            <ButtonElement
-              title="login"
-              type="submit"
-              style="auth-button"
-              loading={loading}
-              loadingStyle="auth-loading"
-            />
-          </FormElement>
-          <div>
-            <span> Dont have an account ? </span>
-            <Link href="/register" className="font-semibold">
-              Register here
-            </Link>
+                <ButtonElement
+                  title="login"
+                  type="submit"
+                  style="flex-center"
+                  loading={loading}
+                />
+              </FormElement>
+              <div>
+                <span> Dont have an account ? </span>
+                <Link href="/register" className="font-semibold">
+                  Register here
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
   );
 };
 

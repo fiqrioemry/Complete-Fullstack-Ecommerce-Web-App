@@ -22,7 +22,6 @@ const ProductCard = ({ products }) => {
 
           <h4>{product.title}</h4>
           <p>Rp. {product.price}</p>
-
           <Button
             variant="primary"
             onClick={() => router.push(`/${product.storeSlug}/${product.slug}`)}

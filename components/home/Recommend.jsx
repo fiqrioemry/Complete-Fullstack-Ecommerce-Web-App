@@ -12,25 +12,30 @@ const Recommend = () => {
   const { products, loading, total } = useSelector((state) => state.product);
 
   return (
-    <section className="content-wrapper">
-      <SectionHead title="recommend for you" />
-      <div className="content-grid">
-        {!products ? (
-          <ProductCardLoading />
-        ) : (
-          <ProductCard products={products} />
-        )}
-
-        {loading && <ProductCardLoading />}
+    <section className="section-wrapper">
+      <div className="section-head">
+        <span className="w-2 h-10 bg-primary"></span>
+        <h2 className="capitalize">recommend for you</h2>
       </div>
-      {total >= limit && (
-        <ButtonElement
-          title="load more"
-          style={`${loading ? "cursor-not-allowed" : ""} w-full flex-center `}
-          handleClick={handleShowMore}
-          loading={loading}
-        />
-      )}
+      <div className="section-body">
+        <div className="content-grid-4">
+          {!products ? (
+            <ProductCardLoading />
+          ) : (
+            <ProductCard products={products} />
+          )}
+
+          {loading && <ProductCardLoading />}
+        </div>
+        {total >= limit && (
+          <ButtonElement
+            title="load more"
+            style={`${loading ? "cursor-not-allowed" : ""} w-full flex-center `}
+            handleClick={handleShowMore}
+            loading={loading}
+          />
+        )}
+      </div>
     </section>
   );
 };

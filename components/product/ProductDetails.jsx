@@ -43,23 +43,22 @@ const ProductDetails = ({ links, product }) => {
           </div>
         ))}
       </div>
-      <div className="section-centent">
+      <div className="section-body">
         <div className="content-grid-2">
           {/* product images */}
-          <div className="content-flex">
+
+          <div className="display-grid">
             <div className="display-20">
-              {product.images?.map((image, index) => {
-                return (
-                  <div className="image-wrapper" key={index}>
-                    <Image
-                      width={80}
-                      height={80}
-                      src={image}
-                      alt="image_detail_thumbnail"
-                    />
-                  </div>
-                );
-              })}
+              {[...Array(4)]?.map((image, index) => (
+                <div className="image-wrapper" key={index}>
+                  <Image
+                    width={80}
+                    height={80}
+                    src={image}
+                    alt="image_detail_thumbnail"
+                  />
+                </div>
+              ))}
             </div>
             <div className="display-80">
               <div className="image-wrapper">
@@ -75,22 +74,25 @@ const ProductDetails = ({ links, product }) => {
 
           {/* product description */}
           <div className="flex-col-between">
-            <div className="main-content">
+            <article className="content-wrapper">
               <h2>{product.title}</h2>
               <p>Rp. {product.price}</p>
               <p>{product.description}</p>
-            </div>
-            <div className="main-content">
-              <div className="flex-center-start">
+            </article>
+            <div className="content-wrapper">
+              <div className="content-grid-2">
                 <QuantityElement
                   handleDecrease={handleDecrease}
                   handleIncrease={handleIncrease}
                   quantity={quantity}
                   stock={product.stock}
                 />
-                <div>Maximum : {product.stock} Pieces</div>
+
+                <div className="display-wrapper">
+                  Maximum : {product.stock} Pieces
+                </div>
               </div>
-              <div className="main-content">
+              <div className="content-wrapper">
                 <ButtonElement
                   title="add to cart"
                   name="add"

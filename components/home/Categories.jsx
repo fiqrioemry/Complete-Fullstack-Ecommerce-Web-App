@@ -4,10 +4,15 @@ import CategoryCard from "./CategoryCard";
 
 const Categories = () => {
   return (
-    <section className="content-wrapper">
-      <SectionHead title="product categories" />
-      <div className="content-grid">
-        <CategoryCard />
+    <section className="section-wrapper">
+      <div className="section-head">
+        <span className="w-2 h-10 bg-primary"></span>
+        <h2 className="capitalize">product categories</h2>
+      </div>
+      <div className="section-body">
+        <div className="content-grid-4">
+          <CategoryCard />
+        </div>
       </div>
     </section>
   );
