@@ -17,7 +17,7 @@ import {
   searchProducts,
 } from "@/store/action/ProductAction";
 import { useAuth } from "./AuthProvider";
-import { debounce } from "lodash";
+import { debounce, sortBy } from "lodash";
 
 const ProductContext = createContext();
 
@@ -25,11 +25,29 @@ export const ProductProvider = ({ children }) => {
   const params = useParams();
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const { input, setInput } = useAuth();
   const [limit, setLimit] = useState(8);
+  const [searchInput, setSearchInput] = useState({
+    search: "",
+    minRating: "",
+    maxRating: "",
+    city: "",
+    minPrice: "",
+    maxPrice: "",
+    category: "",
+    order: "",
+    sortBy: "",
+  });
 
   const handleShowMore = () => {
     setLimit((prevLimit) => prevLimit + 4);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setSearchInput((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
   };
 
   const handleSearch = () => {};
@@ -43,8 +61,8 @@ export const ProductProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    if (input.search) debounceSearch(input.search);
-  }, [input.search]);
+    if (searchInput.search) debounceSearch(searchInput.search);
+  }, [searchInput.search]);
 
   useEffect(() => {
     if (pathname === "/") {
@@ -56,7 +74,9 @@ export const ProductProvider = ({ children }) => {
     }
   }, [dispatch, limit, pathname, params]);
   return (
-    <ProductContext.Provider value={{ handleShowMore, handleSearch, limit }}>
+    <ProductContext.Provider
+      value={{ searchInput, handleChange, handleShowMore, handleSearch, limit }}
+    >
       {children}
     </ProductContext.Provider>
   );

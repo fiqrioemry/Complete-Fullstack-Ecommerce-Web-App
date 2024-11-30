@@ -11,7 +11,7 @@ const page = () => {
       <section className="section-wrapper">
         <div className="section-head">
           <div className="w-2 h-10 bg-primary"></div>
-          <h2 className="capitalize">Search Results</h2>
+          <h2 className="capitalize">Search Result</h2>
         </div>
 
         <div className="section-body">

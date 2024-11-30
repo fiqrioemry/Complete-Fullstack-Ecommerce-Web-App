@@ -14,8 +14,7 @@ import { useProduct } from "@/provider/ProductProvider";
 
 const Header = () => {
   const router = useRouter();
-  const { handleSearch } = useProduct();
-  const { input, handleChange } = useAuth();
+  const { handleSearch, searchInput, handleChange } = useProduct();
   const { user } = useSelector((state) => state.auth);
   const { search, loading, message } = useSelector((state) => state.product);
 
@@ -32,7 +31,7 @@ const Header = () => {
             <InputElement
               type="search"
               name="search"
-              value={input.search}
+              value={searchInput.search}
               style="header-search-input"
               onChange={handleChange}
               placeholder="search product name"
@@ -44,7 +43,7 @@ const Header = () => {
           </form>
 
           <SearchDropdown
-            input={input.search}
+            input={searchInput.search}
             result={search}
             status={loading}
             message={message}
