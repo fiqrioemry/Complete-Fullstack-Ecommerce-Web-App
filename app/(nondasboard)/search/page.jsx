@@ -4,8 +4,9 @@ import FilterProducts from "@/components/search/FilterProducts";
 import React from "react";
 import { useSelector } from "react-redux";
 
-const page = () => {
+const Page = () => {
   const { products } = useSelector((state) => state.product);
+
   return (
     <main className="page-wrapper">
       <section className="section-wrapper">
@@ -34,4 +35,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

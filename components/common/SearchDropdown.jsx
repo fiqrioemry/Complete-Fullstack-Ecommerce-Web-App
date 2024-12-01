@@ -1,32 +1,35 @@
 import React from "react";
 import SpinnerElement from "../element/SpinnerElement";
 
-const SearchDropdown = ({ input, handleSearch, result, status, message }) => {
+const SearchDropdown = ({
+  message,
+  loading,
+  searchInput,
+  searchResult,
+  handleSearch,
+}) => {
   return (
-    <div
-      className={`${
-        input ? "h-auto" : "h-0"
-      } absolute w-full bg-white rounded-md top-12  shadow-xl transition-all duration-300 overflow-y-auto`}
-    >
-      <div className="flex flex-col gap-y-4 py-4 px-4">
-        {status ? (
-          <div className="flex items-center justify-center py-4">
+    <div className="h-auto absolute w-full top-15 bg-white rounded-md shadow-xl transition-all duration-300 overflow-y-auto">
+      <div className="space-y-2 p-2">
+        {/* first time rendered */}
+        {!searchInput ? (
+          <div>search your product</div>
+        ) : loading ? (
+          <div className="flex-center">
             <SpinnerElement />
           </div>
-        ) : !result.length ? (
+        ) : !searchResult.length ? (
           <div>{message}</div>
         ) : (
-          result.map((item, index) => {
-            return (
-              <button
-                onClick={handleSearch(`/search?q=${item.slug}`)}
-                className="flex items-center"
-                key={index}
-              >
-                {item.title.slice(0, 45) + "..."}
-              </button>
-            );
-          })
+          searchResult.map((item, index) => (
+            <button
+              onClick={() => handleSearch(`/search?query=${item.slug}`)}
+              className="flex items-center"
+              key={index}
+            >
+              {item.title.slice(0, 50) + "..."}
+            </button>
+          ))
         )}
       </div>
     </div>

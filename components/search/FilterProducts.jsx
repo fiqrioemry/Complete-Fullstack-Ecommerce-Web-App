@@ -11,8 +11,7 @@ const cities = ["Medan", "Jakarta", "Surabaya", "Bandung", , "Yogyakarta"];
 
 const FilterProducts = () => {
   const { handleChange, searchInput } = useProduct();
-  const { city, minPrice, maxPrice, category, minRating, maxRating } =
-    searchInput;
+
   return (
     <div className="p-4 space-y-4">
       <h1>Filter</h1>
@@ -30,7 +29,8 @@ const FilterProducts = () => {
             <div className="borders py-2 px-4">$</div>
             <InputElement
               name="minPrice"
-              value=""
+              value={searchInput.minPrice}
+              onChange={handleChange}
               placeholder="minimum price"
               style="p-2 w-full borders outline-none focus:border-primary block"
             />
@@ -39,9 +39,10 @@ const FilterProducts = () => {
           <div className="flex items-center">
             <div className="borders py-2 px-4">$</div>
             <InputElement
-              name="minPrice"
-              value=""
-              placeholder="minimum price"
+              name="maxPrice"
+              value={searchInput.maxPrice}
+              onChange={handleChange}
+              placeholder="maximum price"
               style="p-2 w-full borders outline-none focus:border-primary block"
             />
           </div>
@@ -63,7 +64,7 @@ const FilterProducts = () => {
                 value={city}
                 name="city"
                 handleCheck={handleChange}
-                checked=""
+                checked={searchInput.city.includes(city)}
               />
               <div>{city}</div>
             </div>

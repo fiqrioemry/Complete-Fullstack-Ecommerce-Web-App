@@ -3,19 +3,23 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import ShoppingCart from "./ShoppingCart";
-import { MdSearch } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import SearchDropdown from "./SearchDropdown";
-import { useAuth } from "@/provider/AuthProvider";
 import UserMenuDropDown from "./UserMenuDropdown";
-import InputElement from "../element/InputElement";
 import ButtonElement from "../element/ButtonElement";
 import { useProduct } from "@/provider/ProductProvider";
 
 const Header = () => {
   const router = useRouter();
-  const { handleSearch, searchInput, handleChange } = useProduct();
   const { user } = useSelector((state) => state.auth);
+  const {
+    searchInput,
+    handleSearch,
+    handleChange,
+    dropdownRef,
+    showDropdown,
+    setShowDropdown,
+  } = useProduct();
   const { search, loading, message } = useSelector((state) => state.product);
 
   return (
@@ -26,29 +30,25 @@ const Header = () => {
           <span className="header-logo-span">SHOP</span>
         </div>
 
-        <div className="header-search-margin">
-          <form onSubmit={handleSearch} className="flex w-full items-center">
-            <InputElement
-              type="search"
-              name="search"
-              value={searchInput.search}
-              style="header-search-input"
-              onChange={handleChange}
-              placeholder="search product name"
-            >
-              <button>
-                <MdSearch className="absolute right-5 cursor-pointer" />
-              </button>
-            </InputElement>
-          </form>
-
-          <SearchDropdown
-            input={searchInput.search}
-            result={search}
-            status={loading}
-            message={message}
-            handleSearch={handleSearch}
+        <div className="relative w-full" ref={dropdownRef}>
+          <input
+            type="search"
+            name="search"
+            value={searchInput.search}
+            onChange={handleChange}
+            onFocus={() => setShowDropdown(true)}
+            className="w-full p-2 border rounded"
+            placeholder="Search your product"
           />
+          {showDropdown && (
+            <SearchDropdown
+              searchInput={searchInput.search}
+              searchResult={search}
+              message={message}
+              loading={loading}
+              handleSearch={handleSearch}
+            />
+          )}
         </div>
 
         <div className="flex-between space-x-4">

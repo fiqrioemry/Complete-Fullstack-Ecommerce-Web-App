@@ -2,7 +2,7 @@
 
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import {
   addToCart,
   deleteCartItem,

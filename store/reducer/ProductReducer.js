@@ -25,12 +25,13 @@ const initialState = {
   success: false,
   failed: false,
   message: "",
+  open: false,
+  searchLoading: false,
 };
 
 export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     // * GET ALL PRODUCTS ------------------------------------------------------------
-
     case GET_PRODUCT_PROCESS:
       return { ...state, loading: true };
 

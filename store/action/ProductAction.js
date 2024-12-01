@@ -22,7 +22,6 @@ import {
   SEARCH_PROCESS,
   SEARCH_SUCCESS,
   SEARCH_FAILED,
-  RESET,
 } from "../constant/ProductType";
 
 import callApi from "../../services/index";

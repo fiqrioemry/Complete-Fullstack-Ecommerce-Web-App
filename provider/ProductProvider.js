@@ -1,14 +1,12 @@
 "use client";
 
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, usePathname, useRouter } from "next/navigation";
-
 import React, {
   createContext,
   useCallback,
   useContext,
   useEffect,
   useState,
+  useRef,
 } from "react";
 import {
   getAllProducts,
@@ -16,24 +14,30 @@ import {
   getProductDetail,
   searchProducts,
 } from "@/store/action/ProductAction";
-import { useAuth } from "./AuthProvider";
-import { debounce, sortBy } from "lodash";
+import { debounce } from "lodash";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 
 const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const params = useParams();
-  const dispatch = useDispatch();
+  const router = useRouter();
   const pathname = usePathname();
+  const dispatch = useDispatch();
+  const dropdownRef = useRef(null);
   const [limit, setLimit] = useState(8);
+  const searchParams = useSearchParams();
+  const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState({
-    search: "",
-    minRating: "",
-    maxRating: "",
-    city: "",
-    minPrice: "",
-    maxPrice: "",
-    category: "",
+    search: searchParams.get("query") || "",
+    minRating: searchParams.get("minRating") || "",
+    maxRating: searchParams.get("maxRating") || "",
+    city: searchParams.get("city") || "",
+    minPrice: searchParams.get("minPrice") || "",
+    maxPrice: searchParams.get("maxPrice") || "",
+    category: searchParams.get("category") || "",
     order: "",
     sortBy: "",
   });
@@ -50,7 +54,10 @@ export const ProductProvider = ({ children }) => {
     }));
   };
 
-  const handleSearch = () => {};
+  const handleSearch = (path) => {
+    router.push(path);
+    setShowDropdown(false);
+  };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(
@@ -62,7 +69,7 @@ export const ProductProvider = ({ children }) => {
 
   useEffect(() => {
     if (searchInput.search) debounceSearch(searchInput.search);
-  }, [searchInput.search]);
+  }, [debounceSearch, searchInput.search]);
 
   useEffect(() => {
     if (pathname === "/") {
@@ -73,9 +80,30 @@ export const ProductProvider = ({ children }) => {
       dispatch(getProductDetail(params.product));
     }
   }, [dispatch, limit, pathname, params]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   return (
     <ProductContext.Provider
-      value={{ searchInput, handleChange, handleShowMore, handleSearch, limit }}
+      value={{
+        limit,
+        dropdownRef,
+        searchInput,
+        handleSearch,
+        handleChange,
+        showDropdown,
+        handleShowMore,
+        setShowDropdown,
+      }}
     >
       {children}
     </ProductContext.Provider>
