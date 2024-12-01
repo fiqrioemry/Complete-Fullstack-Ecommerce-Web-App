@@ -47,6 +47,7 @@ export const ProductProvider = ({ children }) => {
     Object.entries(filters).forEach(([key, value]) => {
       if (value) params.append(key, value);
     });
+
     return params.toString();
   };
 
@@ -62,21 +63,25 @@ export const ProductProvider = ({ children }) => {
     }));
   };
 
-  const handleSearch = () => {
-    const query = buildQueryParams(searchInput);
-    router.push(`/search?${query}`);
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent default form submission
+    const query = buildQueryParams({
+      ...searchInput,
+      search: searchInput.search.trim(), // Ensure no trailing/leading spaces
+    });
+    router.push(`/search?${query}`); // Construct and navigate to the URL
     setShowDropdown(false);
   };
 
-  useEffect(() => {
+  const handleSearch = (params) => {
+    setSearchInput((prevInput) => ({
+      ...prevInput,
+      search: params,
+    }));
     const query = buildQueryParams(searchInput);
-    if (query) {
-      console.log("PRINT LOG INFO: 123", searchInput.search);
-      router.push(`${pathname}?${query}`);
-    } else {
-      router.push(pathname);
-    }
-  }, [router, pathname, searchInput]);
+    router.push(`/search?search=${query}`);
+    setShowDropdown(false);
+  };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(
@@ -85,6 +90,14 @@ export const ProductProvider = ({ children }) => {
     }, 500),
     []
   );
+
+  useEffect(() => {
+    const query = buildQueryParams(searchInput);
+    if (query) {
+      console.log("PRINT LOG INFO:");
+      dispatch(getAllProducts(searchInput));
+    }
+  }, []);
 
   useEffect(() => {
     if (searchInput.search) {
@@ -123,6 +136,7 @@ export const ProductProvider = ({ children }) => {
         searchInput,
         handleSearch,
         handleChange,
+        handleSubmit,
         showDropdown,
         handleShowMore,
         setShowDropdown,

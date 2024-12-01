@@ -19,6 +19,7 @@ const Header = () => {
     dropdownRef,
     showDropdown,
     setShowDropdown,
+    handleSubmit,
   } = useProduct();
   const { search, loading, message } = useSelector((state) => state.product);
 
@@ -31,15 +32,17 @@ const Header = () => {
         </div>
 
         <div className="relative w-full" ref={dropdownRef}>
-          <input
-            type="search"
-            name="search"
-            value={searchInput.search}
-            onChange={handleChange}
-            onFocus={() => setShowDropdown(true)}
-            className="w-full p-2 border rounded"
-            placeholder="Search your product"
-          />
+          <form onSubmit={handleSubmit}>
+            <input
+              type="search"
+              name="search"
+              value={searchInput.search}
+              onChange={handleChange}
+              onFocus={() => setShowDropdown(true)}
+              className="w-full p-2 border rounded"
+              placeholder="Search your product"
+            />
+          </form>
           {showDropdown && (
             <SearchDropdown
               searchInput={searchInput.search}

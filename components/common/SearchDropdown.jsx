@@ -23,7 +23,7 @@ const SearchDropdown = ({
         ) : (
           searchResult.map((item, index) => (
             <button
-              onClick={() => handleSearch(`/search?query=${item.slug}`)}
+              onClick={() => handleSearch(item.slug)}
               className="flex items-center"
               key={index}
             >
