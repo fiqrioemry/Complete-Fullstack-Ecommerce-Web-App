@@ -46,17 +46,17 @@ export const getAllProducts =
     try {
       dispatch({ type: GET_PRODUCT_PROCESS });
       // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
-      setTimeout(async () => {
-        const response = await callApi.get(
-          `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
-        );
 
-        dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
-      }, 1500);
+      const response = await callApi.get(
+        `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
+      );
+
+      dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
     } catch (error) {
+      console.log("PRINT LOG INFO 111111111111111", error);
       dispatch({
         type: GET_PRODUCT_FAILED,
-        payload: error.response.data.message,
+        payload: error.response.message,
       });
     }
   };

@@ -75,8 +75,7 @@ export const ProductProvider = ({ children }) => {
       ...prevInput,
       [name]: value,
     }));
-
-    const query = buildQueryParams(searchInput);
+    const query = buildQueryParams({ ...searchInput, [name]: value });
     router.push(`/search?${query}`);
     setShowDropdown(false);
   };

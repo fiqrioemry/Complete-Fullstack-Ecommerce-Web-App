@@ -1,4 +1,5 @@
 "use client";
+import PageNotFound from "@/app/not-found";
 import ProductCard from "@/components/common/ProductCard";
 import ProductCardLoading from "@/components/common/ProductCardLoading";
 import FilterProducts from "@/components/search/FilterProducts";
@@ -9,7 +10,9 @@ import { useSelector } from "react-redux";
 
 const Page = () => {
   const { handleSearch } = useProduct();
-  const { products, loading, detail } = useSelector((state) => state.product);
+  const { products, loading, failed, detail } = useSelector(
+    (state) => state.product
+  );
 
   return (
     <main className="page-wrapper">
@@ -33,6 +36,8 @@ const Page = () => {
                 <div className="content-grid-4">
                   {loading ? (
                     <ProductCardLoading />
+                  ) : failed ? (
+                    <PageNotFound />
                   ) : (
                     <ProductCard products={products} />
                   )}
