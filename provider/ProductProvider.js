@@ -31,11 +31,10 @@ export const ProductProvider = ({ children }) => {
   const searchParams = useSearchParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState({
-    page: searchParams.get("page") || 1,
     order: "",
     sortBy: "",
     city: searchParams.get("city") || "",
-    search: searchParams.get("query") || "",
+    search: searchParams.get("search") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
     category: searchParams.get("category") || "",
@@ -65,26 +64,39 @@ export const ProductProvider = ({ children }) => {
 
   const handleSearch = () => {
     const query = buildQueryParams(searchInput);
-    router.push(`${pathname}?${query}`);
+    router.push(`/search?${query}`);
     setShowDropdown(false);
   };
 
   useEffect(() => {
     const query = buildQueryParams(searchInput);
     if (query) {
+      console.log("PRINT LOG INFO: 123", searchInput.search);
       router.push(`${pathname}?${query}`);
     } else {
       router.push(pathname);
     }
   }, [router, pathname, searchInput]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const debounceSearch = useCallback(
+    debounce((searchParams) => {
+      dispatch(searchProducts(searchParams));
+    }, 500),
+    []
+  );
+
   useEffect(() => {
-    if (searchInput) dispatch(getAllProducts(searchInput));
-  }, [dispatch, searchInput]);
+    if (searchInput.search) {
+      debounceSearch(searchInput.search);
+    }
+  }, [dispatch, debounceSearch, searchInput.search]);
 
   useEffect(() => {
     if (pathname === "/") {
       dispatch(getAllProducts(limit));
+    } else if (pathname.includes("/search?")) {
+      dispatch(getAllProducts(searchInput));
     } else if (params.shop && !params.product) {
       dispatch(getAllStoreProducts(params.shop));
     } else if (params.shop && params.product) {

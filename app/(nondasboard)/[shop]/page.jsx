@@ -77,7 +77,7 @@ const Page = () => {
       <section className="section-wrapper">
         <div className="section-head">
           <div className="w-2 h-10 bg-primary"></div>
-          <h2 className="capitalize">Shop product's</h2>
+          <h2 className="capitalize">Shop products</h2>
         </div>
         <div className="section-body">
           <div className="content-grid-4">

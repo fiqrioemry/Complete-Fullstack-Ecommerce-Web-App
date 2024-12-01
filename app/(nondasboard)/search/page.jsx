@@ -1,13 +1,14 @@
 "use client";
 import ProductCard from "@/components/common/ProductCard";
+import ProductCardLoading from "@/components/common/ProductCardLoading";
 import FilterProducts from "@/components/search/FilterProducts";
 import { Button } from "@/components/ui/button";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const Page = () => {
-  const { products } = useSelector((state) => state.product);
-  console.log(products);
+  const { products, loading } = useSelector((state) => state.product);
+
   return (
     <main className="page-wrapper">
       <section className="section-wrapper">
@@ -24,9 +25,14 @@ const Page = () => {
             </div>
             {/* product search result */}
 
-            <div className="display-70 p-4">
+            <div className="display-70">
+              <div className="flex-center p-4 borders">SORT BY</div>
               <div className="content-grid-4">
-                <ProductCard products={products} />
+                {loading ? (
+                  <ProductCardLoading />
+                ) : (
+                  <ProductCard products={products} />
+                )}
               </div>
               <Button className="w-full">Halaman product</Button>
             </div>
