@@ -3,11 +3,13 @@ import ProductCard from "@/components/common/ProductCard";
 import ProductCardLoading from "@/components/common/ProductCardLoading";
 import FilterProducts from "@/components/search/FilterProducts";
 import { Button } from "@/components/ui/button";
+import { useProduct } from "@/provider/ProductProvider";
 import React from "react";
 import { useSelector } from "react-redux";
 
 const Page = () => {
-  const { products, loading } = useSelector((state) => state.product);
+  const { handleSearch } = useProduct();
+  const { products, loading, detail } = useSelector((state) => state.product);
 
   return (
     <main className="page-wrapper">
@@ -25,16 +27,38 @@ const Page = () => {
             </div>
             {/* product search result */}
 
-            <div className="display-70">
-              <div className="flex-center p-4 borders">SORT BY</div>
-              <div className="content-grid-4">
-                {loading ? (
-                  <ProductCardLoading />
-                ) : (
-                  <ProductCard products={products} />
-                )}
+            <div className="display-70 flex justify-between">
+              <div className="content-wrapper">
+                <div className="flex-center p-4 borders">SORT BY</div>
+                <div className="content-grid-4">
+                  {loading ? (
+                    <ProductCardLoading />
+                  ) : (
+                    <ProductCard products={products} />
+                  )}
+                </div>
               </div>
-              <Button className="w-full">Halaman product</Button>
+              {!loading && (
+                <div className="space-x-2">
+                  {[...Array(detail.totalPage)].map((_, index) => (
+                    <Button
+                      name="page"
+                      value={index + 1}
+                      disabled={detail.currentPage === index + 1}
+                      onClick={handleSearch}
+                      variant="primary"
+                      className={`${
+                        detail.currentPage === index + 1
+                          ? "bg-white text-primary"
+                          : ""
+                      }`}
+                      key={index}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

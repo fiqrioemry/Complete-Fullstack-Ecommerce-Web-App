@@ -17,7 +17,7 @@ import {
 } from "../constant/ProductType";
 
 const initialState = {
-  total: 0,
+  detail: null || [],
   search: null || [],
   product: null || [],
   products: null || [],
@@ -41,7 +41,7 @@ export const productReducer = (state = initialState, action) => {
         success: true,
         loading: false,
         products: action.payload.data,
-        total: action.payload.totalProducts,
+        detail: action.payload.detail,
       };
     }
 
@@ -123,13 +123,13 @@ export const productReducer = (state = initialState, action) => {
     }
 
     case SEARCH_PROCESS:
-      return { ...state, search: null || [], loading: true };
+      return { ...state, search: null || [], searchLoading: true };
 
     case SEARCH_SUCCESS: {
       return {
         ...state,
         success: true,
-        loading: false,
+        searchLoading: false,
         search: action.payload.data,
       };
     }
@@ -138,7 +138,7 @@ export const productReducer = (state = initialState, action) => {
       return {
         ...state,
         failed: true,
-        loading: false,
+        searchLoading: false,
         message: action.payload,
       };
 

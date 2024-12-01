@@ -2,6 +2,7 @@ import React from "react";
 import SpinnerElement from "../element/SpinnerElement";
 
 const SearchDropdown = ({
+  ref,
   message,
   loading,
   searchInput,
@@ -9,7 +10,10 @@ const SearchDropdown = ({
   handleSearch,
 }) => {
   return (
-    <div className="h-auto absolute w-full top-15 bg-white rounded-md shadow-xl transition-all duration-300 overflow-y-auto">
+    <div
+      ref={ref}
+      className="h-auto absolute w-full top-15 bg-white rounded-md shadow-xl transition-all duration-300 overflow-y-auto z-30"
+    >
       <div className="space-y-2 p-2">
         {/* first time rendered */}
         {!searchInput ? (
@@ -23,7 +27,9 @@ const SearchDropdown = ({
         ) : (
           searchResult.map((item, index) => (
             <button
-              onClick={() => handleSearch(item.title)}
+              name="search"
+              value={item.title}
+              onClick={handleSearch}
               className="flex items-center"
               key={index}
             >

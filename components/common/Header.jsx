@@ -21,7 +21,9 @@ const Header = () => {
     setShowDropdown,
     handleSubmit,
   } = useProduct();
-  const { search, loading, message } = useSelector((state) => state.product);
+  const { search, searchLoading, message } = useSelector(
+    (state) => state.product
+  );
 
   return (
     <header className="borders-b">
@@ -48,7 +50,7 @@ const Header = () => {
               searchInput={searchInput.search}
               searchResult={search}
               message={message}
-              loading={loading}
+              loading={searchLoading}
               handleSearch={handleSearch}
             />
           )}

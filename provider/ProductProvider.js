@@ -40,16 +40,16 @@ export const ProductProvider = ({ children }) => {
     category: searchParams.get("category") || "",
     maxRating: searchParams.get("maxRating") || "",
     minRating: searchParams.get("minRating") || "",
+    page: searchParams.get("page") || 1,
   });
 
-  const buildQueryParams = (filters) => {
+  const buildQueryParams = useCallback((filters) => {
     const params = new URLSearchParams();
     Object.entries(filters).forEach(([key, value]) => {
       if (value) params.append(key, value);
     });
-
     return params.toString();
-  };
+  }, []);
 
   const handleShowMore = () => {
     setLimit((prevLimit) => prevLimit + 4);
@@ -64,24 +64,19 @@ export const ProductProvider = ({ children }) => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent default form submission
-    const query = buildQueryParams({
-      ...searchInput,
-      search: searchInput.search.trim(), // Ensure no trailing/leading spaces
-    });
-    router.push(`/search?${query}`); // Construct and navigate to the URL
+    e.preventDefault();
+    router.push(`/search?search=${searchInput.search}`);
     setShowDropdown(false);
   };
 
-  const handleSearch = (params) => {
+  const handleSearch = (e) => {
+    const { name, value } = e.target;
     setSearchInput((prevInput) => ({
       ...prevInput,
-      search: params,
+      [name]: value,
     }));
-    const query = buildQueryParams({
-      ...searchInput,
-      search: params,
-    });
+
+    const query = buildQueryParams(searchInput);
     router.push(`/search?${query}`);
     setShowDropdown(false);
   };
@@ -109,14 +104,14 @@ export const ProductProvider = ({ children }) => {
   useEffect(() => {
     if (pathname === "/") {
       dispatch(getAllProducts(limit));
-    } else if (pathname.includes("/search?")) {
-      dispatch(getAllProducts(searchInput));
-    } else if (params.shop && !params.product) {
-      dispatch(getAllStoreProducts(params.shop));
-    } else if (params.shop && params.product) {
-      dispatch(getProductDetail(params.product));
+    } else if (params.shop) {
+      if (params.product) {
+        dispatch(getProductDetail(params.product));
+      } else {
+        dispatch(getAllStoreProducts(params.shop));
+      }
     }
-  }, [dispatch, limit, pathname, params]);
+  }, [dispatch, limit, pathname, params, searchInput]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
