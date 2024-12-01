@@ -90,22 +90,21 @@ export const ProductProvider = ({ children }) => {
   const debounceSearch = useCallback(
     debounce((searchParams) => {
       dispatch(searchProducts(searchParams));
-    }, 500),
-    []
+    }, 500)
   );
-
-  useEffect(() => {
-    const query = buildQueryParams(searchInput);
-    if (query) {
-      dispatch(getAllProducts(searchInput));
-    }
-  }, []);
 
   useEffect(() => {
     if (searchInput.search) {
       debounceSearch(searchInput.search);
     }
   }, [dispatch, debounceSearch, searchInput.search]);
+
+  useEffect(() => {
+    const query = buildQueryParams(searchInput);
+    if (query) {
+      dispatch(getAllProducts(searchInput));
+    }
+  }, [pathname, params]);
 
   useEffect(() => {
     if (pathname === "/") {
