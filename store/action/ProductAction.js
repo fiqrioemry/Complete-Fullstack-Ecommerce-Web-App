@@ -3,6 +3,7 @@ import {
   GET_PRODUCT_PROCESS,
   GET_PRODUCT_SUCCESS,
   GET_PRODUCT_FAILED,
+
   // product detail
   PRODUCT_DETAIL_PROCESS,
   PRODUCT_DETAIL_SUCCESS,
@@ -18,7 +19,7 @@ import {
   PRODUCT_BY_CAT_SUCCESS,
   PRODUCT_BY_CAT_FAILED,
 
-  // search product with query
+  // search product
   SEARCH_PROCESS,
   SEARCH_SUCCESS,
   SEARCH_FAILED,
@@ -28,13 +29,27 @@ import callApi from "../../services/index";
 
 //  1. GET_ALL_PRODUCT
 export const getAllProducts =
-  (limit = 8) =>
+  ({
+    search = "",
+    category = "",
+    minScore = "",
+    maxScore = "",
+    page = "",
+    minPrice = "",
+    maxPrice = "",
+    city = "",
+    sortBy = "",
+    order = "asc",
+    limit = 8,
+  }) =>
   async (dispatch) => {
     try {
       dispatch({ type: GET_PRODUCT_PROCESS });
       // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
       setTimeout(async () => {
-        const response = await callApi.get(`/api/product?limit=${limit}`);
+        const response = await callApi.get(
+          `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
+        );
 
         dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
       }, 1500);
@@ -94,36 +109,20 @@ export const getProductByCategory = (category) => async (dispatch) => {
 };
 
 // 4. SEARCH PRODUCT WITH QUERY
-export const searchProducts =
-  (
-    search,
-    category = "",
-    minScore = "",
-    maxScore = "",
-    page = "",
-    minPrice = "",
-    maxPrice = "",
-    city = "",
-    sortBy = "",
-    order = "asc",
-    limit = "5"
-  ) =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: SEARCH_PROCESS });
+export const searchProducts = (search) => async (dispatch) => {
+  try {
+    dispatch({ type: SEARCH_PROCESS });
 
-      const response = await callApi.get(
-        `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
-      );
+    const response = await callApi.get(`/api/product?search=${search}`);
 
-      setTimeout(() => {
-        dispatch({ type: SEARCH_SUCCESS, payload: response.data });
-      }, 1000);
-    } catch (error) {
-      console.log("PRINT LOG INFO 1:", error);
-      dispatch({
-        type: SEARCH_FAILED,
-        payload: error.response.data.message,
-      });
-    }
-  };
+    setTimeout(() => {
+      dispatch({ type: SEARCH_SUCCESS, payload: response.data });
+    }, 1000);
+  } catch (error) {
+    console.log("PRINT LOG INFO 1:", error);
+    dispatch({
+      type: SEARCH_FAILED,
+      payload: error.response.data.message,
+    });
+  }
+};

@@ -31,16 +31,25 @@ export const ProductProvider = ({ children }) => {
   const searchParams = useSearchParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState({
-    search: searchParams.get("query") || "",
-    minRating: searchParams.get("minRating") || "",
-    maxRating: searchParams.get("maxRating") || "",
+    page: searchParams.get("page") || 1,
+    order: "",
+    sortBy: "",
     city: searchParams.get("city") || "",
+    search: searchParams.get("query") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
     category: searchParams.get("category") || "",
-    order: "",
-    sortBy: "",
+    maxRating: searchParams.get("maxRating") || "",
+    minRating: searchParams.get("minRating") || "",
   });
+
+  const buildQueryParams = (filters) => {
+    const params = new URLSearchParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) params.append(key, value);
+    });
+    return params.toString();
+  };
 
   const handleShowMore = () => {
     setLimit((prevLimit) => prevLimit + 4);
@@ -54,22 +63,24 @@ export const ProductProvider = ({ children }) => {
     }));
   };
 
-  const handleSearch = (path) => {
-    router.push(path);
+  const handleSearch = () => {
+    const query = buildQueryParams(searchInput);
+    router.push(`${pathname}?${query}`);
     setShowDropdown(false);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceSearch = useCallback(
-    debounce((searchParams) => {
-      dispatch(searchProducts(searchParams));
-    }, 500),
-    []
-  );
+  useEffect(() => {
+    const query = buildQueryParams(searchInput);
+    if (query) {
+      router.push(`${pathname}?${query}`);
+    } else {
+      router.push(pathname);
+    }
+  }, [router, pathname, searchInput]);
 
   useEffect(() => {
-    if (searchInput.search) debounceSearch(searchInput.search);
-  }, [debounceSearch, searchInput.search]);
+    if (searchInput) dispatch(getAllProducts(searchInput));
+  }, [dispatch, searchInput]);
 
   useEffect(() => {
     if (pathname === "/") {
