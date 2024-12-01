@@ -78,8 +78,11 @@ export const ProductProvider = ({ children }) => {
       ...prevInput,
       search: params,
     }));
-    const query = buildQueryParams(searchInput);
-    router.push(`/search?search=${query}`);
+    const query = buildQueryParams({
+      ...searchInput,
+      search: params,
+    });
+    router.push(`/search?${query}`);
     setShowDropdown(false);
   };
 
@@ -94,7 +97,6 @@ export const ProductProvider = ({ children }) => {
   useEffect(() => {
     const query = buildQueryParams(searchInput);
     if (query) {
-      console.log("PRINT LOG INFO:");
       dispatch(getAllProducts(searchInput));
     }
   }, []);
