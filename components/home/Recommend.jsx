@@ -6,9 +6,12 @@ import ProductCard from "../common/ProductCard";
 import ButtonElement from "../element/ButtonElement";
 import { useProduct } from "@/provider/ProductProvider";
 import ProductCardLoading from "../common/ProductCardLoading";
+
 const Recommend = () => {
   const { handleShowMore, limit } = useProduct();
   const { products, loading, detail } = useSelector((state) => state.product);
+
+  console.log("PRINT LOG INFO:", products);
 
   return (
     <section className="section-wrapper">
@@ -29,9 +32,9 @@ const Recommend = () => {
         {detail.totalProduct >= limit && (
           <ButtonElement
             title="load more"
-            style={`${loading ? "cursor-not-allowed" : ""} w-full flex-center `}
+            className={"flex-center w-full"}
             handleClick={handleShowMore}
-            loading={loading}
+            isButtonLoading={loading}
           />
         )}
       </div>

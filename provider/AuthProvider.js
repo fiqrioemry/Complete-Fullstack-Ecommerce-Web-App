@@ -1,83 +1,64 @@
 "use client";
 
-import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { AuthRoute, initialInputState } from "@/config";
-import { usePathname, useRouter } from "next/navigation";
+import useHandleNavigation from "@/hooks/useHandleNavigation";
+import useHandleNotification from "@/hooks/useHandleNotification";
+import { initialSignInState, initialSignUpState } from "@/config";
+import React, { createContext, useContext, useState } from "react";
 import {
   reset,
   userLogin,
   userLogout,
   userRegister,
 } from "@/store/action/AuthAction";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import PageLoading from "@/components/common/PageLoading";
+import useHandleAuth from "@/hooks/useHandleAuth";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const router = useRouter();
-  const pathname = usePathname();
   const dispatch = useDispatch();
-  const [active, setActive] = useState(true);
-  const { success, failed, message, loading } = useSelector(
-    (state) => state.auth
-  );
-  const [input, setInput] = useState({ initialInputState });
+  const pathname = usePathname();
+  const accessToken = Cookies.get("user") || null;
+  const [pageLoading, setPageLoading] = useState(true);
+  const user = JSON.parse(localStorage.getItem("user")) || null;
+  const { success, failed, message } = useSelector((state) => state.auth);
+  const [signInFormData, setSignInFormData] = useState(initialSignInState);
+  const [signUpFormData, setSignUpFormData] = useState(initialSignUpState);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInput((prevInput) => ({
-      ...prevInput,
-      [name]: value,
-    }));
-  };
-
-  const handleLogin = (e) => {
+  const handleSignIn = (e) => {
     e.preventDefault();
-    dispatch(userLogin(input));
+    dispatch(userLogin(signInFormData));
   };
 
-  const handleRegister = (e) => {
+  const handleSignUp = (e) => {
     e.preventDefault();
-
-    dispatch(userRegister(input));
+    dispatch(userRegister(signUpFormData));
   };
 
-  const handleLogout = () => {
+  const handleSignOut = () => {
     dispatch(userLogout());
   };
 
-  useEffect(() => {
-    if (success) {
-      if (pathname === "/login") {
-        router.push("/");
-      } else if (pathname === "/register") {
-        router.push("/login");
-      } else if (AuthRoute.includes(pathname)) {
-        router.push("/login");
-      }
-      toast.info(message);
-    } else if (failed) {
-      toast.error(message);
-    }
-    dispatch(reset());
-  }, [success, failed, message, dispatch, pathname, router]);
+  useHandleNavigation(user, pathname);
+  useHandleAuth(user, accessToken, setPageLoading);
+  useHandleNotification(success, failed, message, reset);
 
   return (
     <AuthContext.Provider
       value={{
-        input,
-        handleChange,
-        handleLogin,
-        handleRegister,
-        handleLogout,
-        loading,
-        active,
-        setActive,
-        setInput,
+        handleSignOut,
+        handleSignUp,
+        handleSignIn,
+        signInFormData,
+        setSignInFormData,
+        signUpFormData,
+        setSignUpFormData,
       }}
     >
-      {children}
+      {pageLoading ? <PageLoading /> : children}
     </AuthContext.Provider>
   );
 };

@@ -53,7 +53,6 @@ export const getAllProducts =
 
       dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
     } catch (error) {
-      console.log("PRINT LOG INFO 111111111111111", error);
       dispatch({
         type: GET_PRODUCT_FAILED,
         payload: error.response.message,

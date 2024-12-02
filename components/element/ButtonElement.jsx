@@ -1,29 +1,27 @@
 import React from "react";
-
-import SpinnerElement from "./SpinnerElement";
 import { Button } from "../ui/button";
+import SpinnerElement from "./SpinnerElement";
 
 const ButtonElement = ({
-  title,
-  style,
-  name = "",
-  type = null,
-  loading,
-  value = "",
+  name,
+  type = "submit",
+  title = "submit",
+  value,
+  className,
   handleClick = null,
-  variant = "primary",
+  isButtonDisabled = false,
+  isButtonLoading = false,
 }) => {
   return (
     <Button
       type={type}
       name={name}
       value={value}
-      variant={variant}
-      className={`${loading ? "cursor-not-allowed" : ""} ${style}`}
+      className={className}
       onClick={handleClick}
-      disabled={loading}
+      disabled={isButtonDisabled || isButtonLoading}
     >
-      {loading ? <SpinnerElement /> : <>{title}</>}
+      {isButtonLoading ? <SpinnerElement /> : title}
     </Button>
   );
 };

@@ -7,7 +7,6 @@ import { FaTrashAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/provider/CartProvider";
 import PageLoading from "@/components/common/PageLoading";
-import SectionHead from "@/components/common/SectionHead";
 import ButtonElement from "@/components/element/ButtonElement";
 import QuantityElement from "@/components/element/QuantityElement";
 import AlternativePage from "@/components/common/AlternativePage";

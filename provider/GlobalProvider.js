@@ -11,6 +11,7 @@ import Footer from "@/components/common/Footer";
 import { ProductProvider } from "./ProductProvider";
 import React, { createContext, useContext, useState } from "react";
 import { CartProvider } from "./CartProvider";
+import PageLoading from "@/components/common/PageLoading";
 
 const GlobalContext = createContext();
 

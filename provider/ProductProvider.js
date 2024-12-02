@@ -18,6 +18,7 @@ import { debounce } from "lodash";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { useParams, usePathname, useSearchParams } from "next/navigation";
+import useDropdown from "@/hooks/useDropDown";
 
 const ProductContext = createContext();
 
@@ -110,18 +111,9 @@ export const ProductProvider = ({ children }) => {
         dispatch(getAllStoreProducts(params.shop));
       }
     }
-  }, [dispatch, limit, pathname, params, searchInput]);
+  }, [dispatch, limit, pathname, params]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  useDropdown(dropdownRef, setShowDropdown);
 
   return (
     <ProductContext.Provider

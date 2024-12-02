@@ -76,3 +76,66 @@ export const initialInputState = {
   password: "",
   passwordConfirm: "",
 };
+
+export const initialSignInState = {
+  email: "",
+  password: "",
+};
+
+export const initialSignUpState = {
+  name: "",
+  email: "",
+  password: "",
+  passwordConfirm: "",
+};
+
+export const signInFormControls = [
+  {
+    name: "email",
+    label: "email",
+    placeholder: "Enter your email",
+    type: "email",
+    componentType: "input",
+  },
+  {
+    name: "password",
+    label: "password",
+    placeholder: "Enter your password",
+    type: "password",
+    componentType: "input",
+  },
+];
+
+export const signUpFormControls = [
+  {
+    name: "name",
+    label: "name",
+    placeholder: "Enter your name",
+    type: "text",
+    componentType: "input",
+  },
+  {
+    name: "email",
+    label: "email",
+    placeholder: "Enter your email",
+    type: "email",
+    componentType: "input",
+  },
+  {
+    name: "password",
+    label: "password",
+    placeholder: "Enter your password",
+    type: "password",
+    componentType: "input",
+  },
+
+  {
+    name: "passwordConfirm",
+    label: "password confirm",
+    placeholder: "Enter your password confirmation",
+    type: "password",
+    componentType: "input",
+  },
+];
+
+// TODO : NEW ADDED ------------------------

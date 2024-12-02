@@ -28,7 +28,9 @@ export const userLogin = (formData) => async (dispatch) => {
 
     dispatch({ type: LOGIN_SUCCESS, payload: response.data });
   } catch (error) {
-    dispatch({ type: LOGIN_FAILED, payload: error.response.data.message });
+    setTimeout(() => {
+      dispatch({ type: LOGIN_FAILED, payload: error.response.data.message });
+    }, 3000);
   }
 };
 
@@ -36,8 +38,6 @@ export const userLogin = (formData) => async (dispatch) => {
 export const userRegister = (formData) => async (dispatch) => {
   try {
     dispatch({ type: REGISTER_PROCESS });
-
-    console.log("PRINT LOG INFO:", formData);
 
     const response = await callApi.post("/api/auth/register", formData, {
       withCredentials: true,
@@ -58,6 +58,18 @@ export const userLogout = () => async (dispatch) => {
   Cookies.remove("accessToken");
 
   dispatch({ type: LOGOUT_SUCCESS, payload: response.data });
+};
+
+export const getResfreshToken = () => async () => {
+  try {
+    const response = await callApi.get("/api/auth/refresh");
+
+    Cookies.set("accessToken", response.data.data, {
+      expires: 15 / 1440,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 4. reset state

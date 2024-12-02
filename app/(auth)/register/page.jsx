@@ -2,16 +2,25 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { signUpFormControls } from "@/config";
 import { useAuth } from "@/provider/AuthProvider";
-import FormElement from "@/components/element/FormElement";
-import InputElement from "@/components/element/InputElement";
 import ImageElement from "@/components/element/ImageElement";
-import ButtonElement from "@/components/element/ButtonElement";
-import HiddenElement from "@/components/element/HiddenElement";
+import FormInput from "@/components/common/common-form/FormInput";
 
 const Page = () => {
-  const { input, handleChange, handleRegister, active, setActive, loading } =
-    useAuth();
+  const { loading } = useSelector((state) => state.auth);
+  const { setSignUpFormData, signUpFormData, handleSignUp } = useAuth();
+
+  function signUpFormValidation() {
+    return (
+      !signUpFormData.name.length ||
+      !signUpFormData.email.length ||
+      !signUpFormData.password.length ||
+      !signUpFormData.passwordConfirm.length
+    );
+  }
+
   return (
     <main className="page-wrapper">
       <section className="section-wrapper">
@@ -32,59 +41,16 @@ const Page = () => {
             </div>
 
             <div className="content-wrapper">
-              <FormElement
-                formStyle="content-wrapper"
-                titleStyle="h3"
-                formTitle="registration page"
-                wrapperStyle="auth-wrapper"
-                handleSubmit={handleRegister}
-              >
-                <InputElement
-                  type="text"
-                  name="name"
-                  style="input-1"
-                  value={input.name}
-                  onChange={handleChange}
-                  placeholder="Enter your username"
-                />
-                <InputElement
-                  type="text"
-                  name="email"
-                  style="input-1"
-                  value={input.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                />
-
-                <InputElement
-                  name="password"
-                  style="input-1"
-                  value={input.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  type={active ? "password" : "text"}
-                >
-                  <HiddenElement hidden={active} setHidden={setActive} />
-                </InputElement>
-
-                <InputElement
-                  name="passwordConfirm"
-                  style="input-1"
-                  value={input.passwordConfirm}
-                  onChange={handleChange}
-                  placeholder="Enter your confirmation password"
-                  type={active ? "password" : "text"}
-                >
-                  <HiddenElement hidden={active} setHidden={setActive} />
-                </InputElement>
-
-                <ButtonElement
-                  title="Register"
-                  type="submit"
-                  style="flex-center"
-                  loading={loading}
-                />
-              </FormElement>
+              <h1 className="text-center">Registration Page</h1>
+              <FormInput
+                buttonText={"Register"}
+                isButtonLoading={loading}
+                formData={signUpFormData}
+                handleSubmit={handleSignUp}
+                setFormData={setSignUpFormData}
+                formControls={signUpFormControls}
+                isButtonDisabled={signUpFormValidation()}
+              />
             </div>
           </div>
         </div>

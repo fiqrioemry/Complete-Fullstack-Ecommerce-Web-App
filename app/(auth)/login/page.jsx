@@ -2,16 +2,19 @@
 
 import React from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { signInFormControls } from "@/config";
 import { useAuth } from "@/provider/AuthProvider";
-import FormElement from "@/components/element/FormElement";
-import InputElement from "@/components/element/InputElement";
 import ImageElement from "@/components/element/ImageElement";
-import ButtonElement from "@/components/element/ButtonElement";
-import HiddenElement from "@/components/element/HiddenElement";
+import FormInput from "@/components/common/common-form/FormInput";
 
 const Page = () => {
-  const { handleLogin, handleChange, input, loading, active, setActive } =
-    useAuth();
+  const { loading } = useSelector((state) => state.auth);
+  const { handleSignIn, signInFormData, setSignInFormData } = useAuth();
+
+  function signInFormValidation() {
+    return !signInFormData.email.length || !signInFormData.password.length;
+  }
   return (
     <main className="page-wrapper">
       <section className="section-wrapper">
@@ -31,41 +34,18 @@ const Page = () => {
             </div>
 
             <div className="content-wrapper">
-              <FormElement
-                formStyle="content-wrapper"
-                titleStyle="h3"
-                formTitle="login page"
-                wrapperStyle="flex-col-between"
-                handleSubmit={handleLogin}
-              >
-                <InputElement
-                  type="text"
-                  name="email"
-                  style="input-1"
-                  value={input.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                />
+              <h1 className="text-center">Login Page</h1>
+              <FormInput
+                buttonText="login"
+                isButtonLoading={loading}
+                formData={signInFormData}
+                handleSubmit={handleSignIn}
+                setFormData={setSignInFormData}
+                formControls={signInFormControls}
+                isButtonDisabled={signInFormValidation()}
+              />
 
-                <InputElement
-                  name="password"
-                  style="input-1"
-                  value={input.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  type={active ? "password" : "text"}
-                >
-                  <HiddenElement hidden={active} setHidden={setActive} />
-                </InputElement>
-
-                <ButtonElement
-                  title="login"
-                  type="submit"
-                  style="flex-center"
-                  loading={loading}
-                />
-              </FormElement>
-              <div>
+              <div className="text-center">
                 <span> Dont have an account ? </span>
                 <Link href="/register" className="font-semibold">
                   Register here
