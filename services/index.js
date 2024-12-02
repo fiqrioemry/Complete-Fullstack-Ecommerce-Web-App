@@ -20,6 +20,7 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       try {
         const { data } = await instance.get("/api/auth/refresh");
+        console.log("PRINT LOG INFO: 111111111111111111111111");
         Cookies.set("accessToken", data.data, {
           secure: true,
           expires: 15 / 1440,

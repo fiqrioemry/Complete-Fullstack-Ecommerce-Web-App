@@ -42,8 +42,8 @@ export const AuthProvider = ({ children }) => {
     dispatch(userLogout());
   };
 
-  useHandleNavigation(user, pathname);
   useHandleAuth(user, accessToken, setPageLoading);
+  useHandleNavigation(user, pathname);
   useHandleNotification(success, failed, message, reset);
 
   return (

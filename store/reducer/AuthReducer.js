@@ -8,6 +8,7 @@ import {
   LOGOUT_PROCESS,
   LOGOUT_SUCCESS,
   RESET,
+  GET_REFRESH,
 } from "../constant/AuthType";
 
 const initialState = {
@@ -79,6 +80,14 @@ export const authReducer = (state = initialState, action) => {
         loading: false,
         success: true,
         message: action.payload.message,
+      };
+    }
+
+    case GET_REFRESH: {
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      return {
+        ...state,
+        user: action.payload,
       };
     }
 

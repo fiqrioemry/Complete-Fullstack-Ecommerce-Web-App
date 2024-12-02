@@ -7,6 +7,7 @@ import {
   REGISTER_FAILED,
   LOGOUT_PROCESS,
   LOGOUT_SUCCESS,
+  GET_REFRESH,
   RESET,
 } from "../constant/AuthType";
 
@@ -55,22 +56,30 @@ export const userLogout = () => async (dispatch) => {
 
   const response = await callApi.get("/api/auth/logout");
 
-  Cookies.remove("accessToken");
-
   dispatch({ type: LOGOUT_SUCCESS, payload: response.data });
 };
 
-export const getResfreshToken = () => async () => {
+export const getUserInfo = () => async () => {
   try {
-    const response = await callApi.get("/api/auth/refresh");
+    const response = await callApi.get("/api/users/profile");
 
-    Cookies.set("accessToken", response.data.data, {
-      expires: 15 / 1440,
-    });
+    dispatch({ type: GET_REFRESH, payload: response.data.user });
   } catch (error) {
     console.log(error);
   }
 };
+
+// export const getResfreshToken = () => async () => {
+//   try {
+//     const response = await callApi.get("/api/auth/refresh");
+
+//     Cookies.set("accessToken", response.data.data, {
+//       expires: 15 / 1440,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 // 4. reset state
 export const reset = () => async (dispatch) => {
