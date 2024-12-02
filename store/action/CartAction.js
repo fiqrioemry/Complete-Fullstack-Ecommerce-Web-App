@@ -1,5 +1,4 @@
 import {
-  GET_CART_PROCESS,
   GET_CART_SUCCESS,
   GET_CART_FAILED,
   ADD_CART_PROCESS,
@@ -11,6 +10,7 @@ import {
   DELETE_CART_PROCESS,
   DELETE_CART_SUCCESS,
   DELETE_CART_FAILED,
+  RESET,
 } from "../constant/CartType";
 import callApi from "../../services/index";
 
@@ -64,4 +64,8 @@ export const deleteCartItem = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: DELETE_CART_FAILED, payload: error.data.message });
   }
+};
+
+export const reset = () => async (dispatch) => {
+  dispatch({ type: RESET });
 };

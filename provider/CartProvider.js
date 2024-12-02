@@ -2,14 +2,16 @@
 
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import useHandleNotification from "@/hooks/useHandleNotification";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import {
+  reset,
   addToCart,
-  deleteCartItem,
   getCartItem,
   updateCartItem,
+  deleteCartItem,
 } from "@/store/action/CartAction";
-import React, { createContext, useContext, useEffect, useState } from "react";
 
 const CartContext = createContext();
 
@@ -93,12 +95,6 @@ export const CartProvider = ({ children }) => {
   }, [user, dispatch, success, message]);
 
   useEffect(() => {
-    if (message) {
-      toast[success ? "info" : "error"](message);
-    }
-  }, [message, success, failed]);
-
-  useEffect(() => {
     if (cart?.length) {
       groupByStore();
       countTotalPrice();
@@ -109,6 +105,7 @@ export const CartProvider = ({ children }) => {
     setQuantity(1);
   }, [pathname]);
 
+  useHandleNotification(success, failed, message, reset);
   return (
     <CartContext.Provider
       value={{

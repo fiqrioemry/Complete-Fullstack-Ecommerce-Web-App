@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 function useHandleNotification(success, failed, message, reset) {
   const dispatch = useDispatch();
@@ -10,7 +10,7 @@ function useHandleNotification(success, failed, message, reset) {
     } else if (failed) {
       toast.error(message);
     }
-    dispatch(reset());
+    dispatch(reset);
   }, [success, failed, message]);
 }
 

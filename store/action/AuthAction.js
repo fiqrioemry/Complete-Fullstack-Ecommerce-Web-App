@@ -59,28 +59,6 @@ export const userLogout = () => async (dispatch) => {
   dispatch({ type: LOGOUT_SUCCESS, payload: response.data });
 };
 
-export const getUserInfo = () => async () => {
-  try {
-    const response = await callApi.get("/api/users/profile");
-
-    dispatch({ type: GET_REFRESH, payload: response.data.user });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-// export const getResfreshToken = () => async () => {
-//   try {
-//     const response = await callApi.get("/api/auth/refresh");
-
-//     Cookies.set("accessToken", response.data.data, {
-//       expires: 15 / 1440,
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
 // 4. reset state
 export const reset = () => async (dispatch) => {
   dispatch({ type: RESET });
