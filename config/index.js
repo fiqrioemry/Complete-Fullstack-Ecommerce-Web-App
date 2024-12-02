@@ -3,38 +3,24 @@
 export const ExcludeNavbarFooter = [
   "/cart/shipment",
   "/dashboard",
-  "/dashboard/admin",
-  "/dashboard/seller",
+  "/admin",
+  "/seller",
   "/myshop",
   "/login",
   "/register",
 ];
 
-export const RestrictedRoute = ["/dashboard", "/dashboard/:path"];
-
-export const NonAuthRoute = [
-  "/login",
-  "/register",
-  "/",
-  "/product/:id",
-  "/search/:params",
-  "/category/:params",
-  "/[shop]/product/:id",
-  "/[shop]",
-];
+export const NonAuthRoute = ["/register", "/login"];
 
 export const AuthRoute = [
-  "/users",
-  "/users/settings",
-  "/users/address",
-  "/users/transaction",
-  "/cart/shipment",
-  "/dashboard",
-  "/dashboard/:path",
-  "/dashboard/admin",
-  "/dashboard/seller",
-  "/myshop",
+  "/cart",
+  "/user",
+  "/user/address",
+  "/user/setting",
+  "/user/transaction",
+  "/user/shipment",
 ];
+export const ProtectedRoute = ["/admin"];
 
 //  ---- homepage -----
 // homepage : banner

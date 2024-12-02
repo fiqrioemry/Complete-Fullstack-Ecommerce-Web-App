@@ -1,8 +1,9 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import useHandleNavigation from "@/hooks/useHandleNavigation";
+import PageLoading from "@/components/common/PageLoading";
+import useAuthValidation from "@/hooks/useAuthValidation";
 import useHandleNotification from "@/hooks/useHandleNotification";
 import { initialSignInState, initialSignUpState } from "@/config";
 import React, { createContext, useContext, useState } from "react";
@@ -12,26 +13,10 @@ import {
   userLogout,
   userRegister,
 } from "@/store/action/AuthAction";
-import PageLoading from "@/components/common/PageLoading";
-import { Router } from "lucide-react";
 
 const AuthContext = createContext();
 
-const protectedRoute = ["/admin"];
-
-const AuthRoute = [
-  "/cart",
-  "/user",
-  "/user/address",
-  "/user/setting",
-  "/user/transaction",
-  "/user/checkout",
-];
-
-const NonAuthRoute = ["/register", "/login"];
-
 export const AuthProvider = ({ children }) => {
-  const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
   const [pageLoading, setPageLoading] = useState(true);
@@ -40,6 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [signInFormData, setSignInFormData] = useState(initialSignInState);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpState);
 
+  // Handlers
   const handleSignIn = (e) => {
     e.preventDefault();
     dispatch(userLogin(signInFormData));
@@ -54,18 +40,10 @@ export const AuthProvider = ({ children }) => {
     dispatch(userLogout());
   };
 
-  useHandleNavigation(user, pathname, setPageLoading);
+  useAuthValidation(user, pathname, setPageLoading);
   useHandleNotification(success, failed, message, reset);
+
   if (pageLoading) return <PageLoading />;
-
-  if (!user && AuthRoute.includes(pathname)) return router.push("/login");
-
-  if (!user && protectedRoute.includes(pathname)) return router.push("/login");
-
-  if (user && NonAuthRoute.includes(pathname)) return router.push("/");
-
-  if (user && user.userRole !== "Admin" && protectedRoute.includes(pathname))
-    return router.push("/");
 
   return (
     <AuthContext.Provider
