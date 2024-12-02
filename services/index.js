@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 
 const instance = axios.create({
   baseURL: "http://localhost:3300",
@@ -20,16 +21,16 @@ instance.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       try {
         const { data } = await instance.get("/api/auth/refresh");
-        console.log("PRINT LOG INFO: 111111111111111111111111");
         Cookies.set("accessToken", data.data, {
           secure: true,
-          expires: 15 / 1440,
+          expires: 15 / 1440, // 15 menit
         });
-
         error.config.headers["Authorization"] = `Bearer ${data.data}`;
         return instance.request(error.config);
       } catch (refreshError) {
-        window.location.href = "/login";
+        if (window.location.pathname !== "/login") {
+          window.location.href = "/login";
+        }
       }
     }
     return Promise.reject(error);

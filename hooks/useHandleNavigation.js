@@ -13,21 +13,24 @@ const AuthRoute = [
 
 const ProtectedRoute = ["/admin"];
 
-function useHandleNavigation(user, pathname) {
+function useHandleNavigation(user, pathname, setPageLoading) {
   const router = useRouter();
   useEffect(() => {
-    if (user) {
+    if (user !== null) {
       if (NonAuthRoute.includes(pathname)) {
-        router.push("/"); // user in login status trying to access login / register page
+        router.push("/");
       } else if (ProtectedRoute.includes(pathname)) {
-        router.push("/"); // user in login status trying to access admin page
+        router.push("/");
       }
-    } else if (!user) {
+      setPageLoading(false);
+    } else {
       if (AuthRoute.includes(pathname)) {
-        router.push("/"); // user not in login status trying to access /cart, /shipment, '/dashboard'
+        router.push("/");
+        setPageLoading(false);
       } else if (ProtectedRoute.includes(pathname)) {
-        router.push("/"); // user not in login status trying to access admin page
+        router.push("/");
       }
+      setPageLoading(false);
     }
   }, [user, pathname]);
 }

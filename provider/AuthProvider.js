@@ -1,7 +1,6 @@
 "use client";
 
-import Cookies from "js-cookie";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import useHandleNavigation from "@/hooks/useHandleNavigation";
 import useHandleNotification from "@/hooks/useHandleNotification";
@@ -14,14 +13,27 @@ import {
   userRegister,
 } from "@/store/action/AuthAction";
 import PageLoading from "@/components/common/PageLoading";
-import useHandleAuth from "@/hooks/useHandleAuth";
+import { Router } from "lucide-react";
 
 const AuthContext = createContext();
 
+const protectedRoute = ["/admin"];
+
+const AuthRoute = [
+  "/cart",
+  "/user",
+  "/user/address",
+  "/user/setting",
+  "/user/transaction",
+  "/user/checkout",
+];
+
+const NonAuthRoute = ["/register", "/login"];
+
 export const AuthProvider = ({ children }) => {
+  const router = useRouter();
   const dispatch = useDispatch();
   const pathname = usePathname();
-  const accessToken = Cookies.get("user") || null;
   const [pageLoading, setPageLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const { success, failed, message } = useSelector((state) => state.auth);
@@ -42,9 +54,18 @@ export const AuthProvider = ({ children }) => {
     dispatch(userLogout());
   };
 
-  useHandleAuth(user, accessToken, setPageLoading);
-  useHandleNavigation(user, pathname);
+  useHandleNavigation(user, pathname, setPageLoading);
   useHandleNotification(success, failed, message, reset);
+  if (pageLoading) return <PageLoading />;
+
+  if (!user && AuthRoute.includes(pathname)) return router.push("/login");
+
+  if (!user && protectedRoute.includes(pathname)) return router.push("/login");
+
+  if (user && NonAuthRoute.includes(pathname)) return router.push("/");
+
+  if (user && user.userRole !== "Admin" && protectedRoute.includes(pathname))
+    return router.push("/");
 
   return (
     <AuthContext.Provider
@@ -58,7 +79,7 @@ export const AuthProvider = ({ children }) => {
         setSignUpFormData,
       }}
     >
-      {pageLoading ? <PageLoading /> : children}
+      {children}
     </AuthContext.Provider>
   );
 };
