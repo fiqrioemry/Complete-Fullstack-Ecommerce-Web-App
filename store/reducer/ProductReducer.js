@@ -1,32 +1,40 @@
 import {
+  // home page / category page / search page
   GET_PRODUCT_PROCESS,
   GET_PRODUCT_SUCCESS,
   GET_PRODUCT_FAILED,
+
+  // product detail page
   PRODUCT_DETAIL_PROCESS,
   PRODUCT_DETAIL_SUCCESS,
   PRODUCT_DETAIL_FAILED,
+
+  // store page
   STORE_PRODUCT_PROCESS,
   STORE_PRODUCT_SUCCESS,
   STORE_PRODUCT_FAILED,
+
+  //
   PRODUCT_BY_CAT_PROCESS,
   PRODUCT_BY_CAT_SUCCESS,
   PRODUCT_BY_CAT_FAILED,
+
+  // search input
   SEARCH_PROCESS,
   SEARCH_SUCCESS,
   SEARCH_FAILED,
 } from "../constant/ProductType";
 
 const initialState = {
-  detail: null || [],
-  search: null || [],
-  product: null || [],
-  products: null || [],
+  detail: [],
+  search: [],
+  product: [],
+  products: [],
+  storeProducts: [],
   loading: false,
   success: false,
   failed: false,
   message: "",
-  open: false,
-  searchLoading: false,
 };
 
 export const productReducer = (state = initialState, action) => {
@@ -50,7 +58,26 @@ export const productReducer = (state = initialState, action) => {
         ...state,
         failed: true,
         loading: false,
-        message: action.payload,
+      };
+
+    // * GET ALL PRODUCTS ------------------------------------------------------------
+    case SEARCH_PROCESS:
+      return { ...state, loading: true };
+
+    case SEARCH_SUCCESS: {
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        search: action.payload.data,
+      };
+    }
+
+    case SEARCH_FAILED:
+      return {
+        ...state,
+        failed: true,
+        loading: false,
       };
 
     // * GET PRODUCT DETAILS ------------------------------------------------------------

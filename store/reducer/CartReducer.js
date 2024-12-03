@@ -49,7 +49,15 @@ export const cartReducer = (state = initialState, action) => {
         message: "",
       };
 
+    case UPDATE_CART_PROCESS:
+      return {
+        ...state,
+        success: false,
+        message: "",
+      };
+
     case ADD_CART_SUCCESS:
+    case UPDATE_CART_SUCCESS:
     case DELETE_CART_SUCCESS: {
       return {
         ...state,
@@ -62,6 +70,7 @@ export const cartReducer = (state = initialState, action) => {
 
     case GET_CART_FAILED:
     case ADD_CART_FAILED:
+    case UPDATE_CART_FAILED:
     case DELETE_CART_FAILED:
       return {
         ...state,

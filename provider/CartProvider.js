@@ -69,7 +69,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) dispatch(getCartItem());
-  }, [user, success]);
+  }, [dispatch, user, success]);
 
   useHandleNotification(success, failed, message, reset);
   return (

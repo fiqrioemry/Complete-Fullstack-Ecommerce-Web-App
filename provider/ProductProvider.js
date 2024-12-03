@@ -28,12 +28,12 @@ export const ProductProvider = ({ children }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const dropdownRef = useRef(null);
-  const [limit, setLimit] = useState(8);
   const searchParams = useSearchParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState({
-    order: "",
-    sortBy: "",
+    limit: 8,
+    order: "asc",
+    sortBy: "createdAt",
     city: searchParams.get("city") || "",
     search: searchParams.get("search") || "",
     minPrice: searchParams.get("minPrice") || "",
@@ -52,10 +52,6 @@ export const ProductProvider = ({ children }) => {
     return params.toString();
   }, []);
 
-  const handleShowMore = () => {
-    setLimit((prevLimit) => prevLimit + 4);
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setSearchInput((prevInput) => ({
@@ -70,14 +66,8 @@ export const ProductProvider = ({ children }) => {
     setShowDropdown(false);
   };
 
-  const handleSearch = (e) => {
-    const { name, value } = e.target;
-    setSearchInput((prevInput) => ({
-      ...prevInput,
-      [name]: value,
-    }));
-    const query = buildQueryParams({ ...searchInput, [name]: value });
-    router.push(`/search?${query}`);
+  const handleClick = (e) => {
+    router.push(`/search?search=${e.target.value}`);
     setShowDropdown(false);
   };
 
@@ -95,15 +85,13 @@ export const ProductProvider = ({ children }) => {
   }, [dispatch, debounceSearch, searchInput.search]);
 
   useEffect(() => {
-    const query = buildQueryParams(searchInput);
-    if (query) {
-      dispatch(getAllProducts(searchInput));
-    }
-  }, [pathname, params]);
-
-  useEffect(() => {
     if (pathname === "/") {
-      dispatch(getAllProducts(limit));
+      dispatch(getAllProducts({ limit: searchInput.limit }));
+    } else if (pathname.includes("/search")) {
+      const query = buildQueryParams(searchInput);
+      if (query) {
+        dispatch(getAllProducts(searchInput));
+      }
     } else if (params.shop) {
       if (params.product) {
         dispatch(getProductDetail(params.product));
@@ -111,21 +99,19 @@ export const ProductProvider = ({ children }) => {
         dispatch(getAllStoreProducts(params.shop));
       }
     }
-  }, [dispatch, limit, pathname, params]);
+  }, [dispatch, searchInput, pathname, params]);
 
   useDropdown(dropdownRef, setShowDropdown);
 
   return (
     <ProductContext.Provider
       value={{
-        limit,
         dropdownRef,
         searchInput,
-        handleSearch,
+        handleClick,
         handleChange,
         handleSubmit,
         showDropdown,
-        handleShowMore,
         setShowDropdown,
       }}
     >

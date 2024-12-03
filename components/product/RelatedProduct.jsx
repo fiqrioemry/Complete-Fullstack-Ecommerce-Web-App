@@ -14,9 +14,10 @@ const RelatedProduct = ({ category }) => {
   useEffect(() => {
     dispatch(getProductByCategory(category));
   }, []);
+
   return (
     <section className="section-wrapper">
-      <SectionHead title="recommend for you" />
+      <SectionHead title="related products" />
       <div className="content-grid-4">
         {!products ? (
           <ProductCardLoading />

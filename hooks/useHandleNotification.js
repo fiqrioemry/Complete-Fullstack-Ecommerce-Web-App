@@ -7,11 +7,11 @@ function useHandleNotification(success, failed, message, reset) {
   useEffect(() => {
     if (success && message !== "") {
       toast.info(message);
-    } else if (failed) {
+    } else if (failed && message !== "") {
       toast.error(message);
     }
     dispatch(reset);
-  }, [success, failed, message]);
+  }, [dispatch, success, failed, message, reset]);
 }
 
 export default useHandleNotification;

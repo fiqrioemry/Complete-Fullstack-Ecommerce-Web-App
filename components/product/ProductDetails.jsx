@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { useCart } from "@/provider/CartProvider";
 import ButtonElement from "../element/ButtonElement";
 import QuantityElement from "../element/QuantityElement";
+import { productDetailBtn } from "@/config";
+import formatToRupiah from "@/utils/formatCurrency";
 
 const ProductDetails = ({ links, product }) => {
   const {
@@ -75,7 +77,7 @@ const ProductDetails = ({ links, product }) => {
           <div className="flex-col-between">
             <article className="content-wrapper">
               <h2>{product.title}</h2>
-              <p>Rp. {product.price}</p>
+              <h3>{formatToRupiah(product.price)}</h3>
               <p>{product.description}</p>
             </article>
             <div className="content-wrapper">

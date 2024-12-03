@@ -8,7 +8,7 @@ import { useProduct } from "@/provider/ProductProvider";
 import ProductCardLoading from "../common/ProductCardLoading";
 
 const Recommend = () => {
-  const { handleShowMore, limit } = useProduct();
+  const { handleChange, searchInput } = useProduct();
   const { products, loading, detail } = useSelector((state) => state.product);
 
   return (
@@ -19,19 +19,21 @@ const Recommend = () => {
       </div>
       <div className="section-body">
         <div className="content-grid-4">
-          {!products ? (
+          {!products.length ? (
             <ProductCardLoading />
           ) : (
             <ProductCard products={products} />
           )}
 
-          {loading && <ProductCardLoading />}
+          {products & loading && <ProductCardLoading />}
         </div>
-        {detail.totalProduct >= limit && (
+        {detail.totalProduct >= searchInput.limit && (
           <ButtonElement
             title="load more"
+            name="limit"
+            value={searchInput.limit + 4}
             className={"flex-center w-full"}
-            handleClick={handleShowMore}
+            handleClick={handleChange}
             isButtonLoading={loading}
           />
         )}

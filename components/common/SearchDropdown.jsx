@@ -7,7 +7,7 @@ const SearchDropdown = ({
   loading,
   searchInput,
   searchResult,
-  handleSearch,
+  handleClick,
 }) => {
   return (
     <div
@@ -29,7 +29,7 @@ const SearchDropdown = ({
             <button
               name="search"
               value={item.title}
-              onClick={handleSearch}
+              onClick={handleClick}
               className="flex items-center"
               key={index}
             >

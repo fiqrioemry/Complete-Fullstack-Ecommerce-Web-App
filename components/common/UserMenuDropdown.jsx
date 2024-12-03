@@ -1,62 +1,111 @@
 import React from "react";
-
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import { useRouter } from "next/navigation";
-
+import Link from "next/link";
 import { FaUserCircle } from "react-icons/fa";
-import ButtonElement from "../element/ButtonElement";
+import { AiOutlineLogout } from "react-icons/ai";
+import { TbLayoutDashboard } from "react-icons/tb";
+import { GrTransaction } from "react-icons/gr";
 import { useAuth } from "@/provider/AuthProvider";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const UserMenuDropDown = () => {
-  const router = useRouter();
-  const { handleLogout, loading } = useAuth();
+  const { handleSignOut } = useAuth();
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <div className="flex-center space-x-2">
-          <FaUserCircle className="text-3xl cursor-pointer" />
-          <span className="hidden md:block">customer 01</span>
-        </div>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto space-y-6 bg-background">
-        <div className="flex-center space-x-4">
-          <FaUserCircle className="text-3xl cursor-pointer" />
-          <h3>customer 01</h3>
-        </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <FaUserCircle className="h-8 w-8 cursor-pointer" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>
+          <div className="flex-center space-x-4">
+            <FaUserCircle className="h-8 w-8" />
+            <div>
+              <p>customer 01</p>
+              <span>customer01@gmail.com</span>
+            </div>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link
+            href="/user/settings"
+            className="flex items-center space-x-2 px-2 py-1"
+          >
+            <TbLayoutDashboard />
+            <span>Dashboard</span>
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link
+            href="/user/transaction"
+            className="flex items-center space-x-2 px-2 py-1"
+          >
+            <GrTransaction />
+            <span>Transaction</span>
+          </Link>
+        </DropdownMenuItem>
 
-        <div className="flex flex-col space-y-2">
-          <ButtonElement
-            title="profile"
-            variant="primary"
-            style="auth-button"
-            handleClick={() => router.push("/users/settings")}
-          />
-          <ButtonElement
-            title="transaction"
-            variant="primary"
-            style="auth-button"
-            handleClick={() => router.push("/users/transaction")}
-          />
-
-          <ButtonElement
-            title="Logout"
-            style="auth-button"
-            loading={loading}
-            variant="primary"
-            loadingStyle="auth-loading"
-            handleClick={handleLogout}
-            disabled={loading}
-          />
-        </div>
-      </PopoverContent>
-    </Popover>
+        <DropdownMenuItem>
+          <button
+            className="flex items-center w-full space-x-2 px-2 py-1"
+            onClick={handleSignOut}
+          >
+            <AiOutlineLogout />
+            <span>Logout</span>
+          </button>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
 export default UserMenuDropDown;
+{
+  /* <div className="flex-center space-x-4 py-4 border-b">
+<FaUserCircle className="h-8 w-8" />
+<div>
+  <p>customer 01</p>
+  <span>customer01@gmail.com</span>
+</div>
+</div>
+
+<div className="space-y-2 py-4">
+<Link
+  href="/user/settings"
+  className="flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-200"
+>
+  <TbLayoutDashboard />
+  <span>Dashboard</span>
+</Link>
+
+<Link
+  href="/user/transaction"
+  className="flex items-center space-x-2 px-2 py-1 rounded-md hover:bg-gray-200"
+>
+  <GrTransaction />
+  <span>Transaction</span>
+</Link>
+
+<button
+  className="flex items-center w-full space-x-2 px-2 py-1 rounded-md hover:bg-gray-200"
+  onClick={handleSignOut}
+>
+  <AiOutlineLogout />
+  <span>Logout</span>
+</button>
+</div> */
+}

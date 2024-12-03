@@ -31,26 +31,25 @@ import callApi from "../../services/index";
 export const getAllProducts =
   ({
     search = "",
-    category = "",
-    minScore = "",
-    maxScore = "",
-    page = "",
+    city = "",
     minPrice = "",
     maxPrice = "",
-    city = "",
+    category = "",
+    minRating = "",
+    maxRating = "",
+    order = "",
     sortBy = "",
-    order = "asc",
     limit = 8,
-  }) =>
+    page,
+  } = {}) =>
   async (dispatch) => {
     try {
       dispatch({ type: GET_PRODUCT_PROCESS });
-      // TODO :timeout not necessary just to give an obvious UX when loading card, remove in production
 
       const response = await callApi.get(
-        `/api/product?search=${search}&category=${category}&minScore=${minScore}&maxScore=${maxScore}&page=${page}&minPrice=${minPrice}&maxPrice=${maxPrice}&city=${city}&sortBy=${sortBy}&order=${order}&limit=${limit}`
+        `/api/product?search=${search}&city=${city}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&minRating=${minRating}&maxRating=${maxRating}&order=${order}&sortBy=${sortBy}&limit=${limit}&page=${page}`
       );
-
+      console.log("PRINT LOG INFO:", response);
       dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
     } catch (error) {
       dispatch({
@@ -112,13 +111,12 @@ export const searchProducts = (search) => async (dispatch) => {
   try {
     dispatch({ type: SEARCH_PROCESS });
 
-    const response = await callApi.get(`/api/product?search=${search}`);
+    const response = await callApi.get(`/api/product?search=${search}&limit=8`);
 
     setTimeout(() => {
       dispatch({ type: SEARCH_SUCCESS, payload: response.data });
     }, 1000);
   } catch (error) {
-    console.log("PRINT LOG INFO 1:", error);
     dispatch({
       type: SEARCH_FAILED,
       payload: error.response.data.message,

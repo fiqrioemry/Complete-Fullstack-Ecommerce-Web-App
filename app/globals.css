@@ -20,16 +20,16 @@
   }
 
   .borders {
-    @apply border-2 border-primary;
+    @apply border-[1px] border-borderColor;
   }
   .borders-t {
-    @apply border-t-2 border-primary;
+    @apply border-t-[1px] border-borderColor;
   }
   .borders-b {
-    @apply border-b-2 border-primary;
+    @apply border-b-[1px] border-borderColor;
   }
   .borders-tb {
-    @apply border-b-2 border-t-2 border-primary;
+    @apply border-b-[1px] border-t-[1px] border-borderColor;
   }
 
   /* title / heading */
@@ -88,30 +88,14 @@
 
   :root {
     --radius: 0.5rem;
-    --primary: rgb(31 41 55);
-    --secondary: rgb(55 65 81);
-    --accent: #1da1f2;
-    --accent-hover: #1877b4;
+    --primary: #010101; /* btn - text */
+    --secondary: #f2f0ea;
+    --bg-border: #a4a4a4;
+    --btn-background-hover: #a4a4a4;
+    --text-hover: #a4a4a4;
+    --accent: #edcf5d;
     --background: #ffffff;
-    --foreground: #f5f5f5;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
-  .dark {
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --foreground: #f2f0ea;
   }
 }
 
@@ -296,7 +280,6 @@
   @apply min-h-[200px] max-h-[800px] overflow-y-auto;
 }
 
-/* Menghilangkan tombol "x" pada input type="search" di semua browser */
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
   appearance: none;
@@ -307,6 +290,6 @@ input[type="search"]::-moz-search-cancel-button {
 }
 
 input[type="search"] {
-  -webkit-appearance: none; /* Untuk browser berbasis WebKit */
-  appearance: none; /* Untuk kompatibilitas lintas browser */
+  -webkit-appearance: none;
+  appearance: none;
 }

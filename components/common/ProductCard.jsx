@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import formatToRupiah from "@/utils/formatCurrency";
 
 const ProductCard = ({ products }) => {
   const router = useRouter();
@@ -21,9 +22,8 @@ const ProductCard = ({ products }) => {
           </div>
 
           <h4>{product.title}</h4>
-          <p>Rp. {product.price}</p>
+          <p>{formatToRupiah(product.price)}</p>
           <Button
-            variant="primary"
             onClick={() => router.push(`/${product.storeSlug}/${product.slug}`)}
             className="w-full"
           >

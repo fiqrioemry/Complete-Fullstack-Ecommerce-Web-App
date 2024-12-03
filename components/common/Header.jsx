@@ -14,12 +14,12 @@ const Header = () => {
   const { user } = useSelector((state) => state.auth);
   const {
     searchInput,
-    handleSearch,
     handleChange,
     dropdownRef,
     showDropdown,
     setShowDropdown,
     handleSubmit,
+    handleClick,
   } = useProduct();
   const { search, searchLoading, message } = useSelector(
     (state) => state.product
@@ -51,18 +51,17 @@ const Header = () => {
               searchResult={search}
               message={message}
               loading={searchLoading}
-              handleSearch={handleSearch}
+              handleClick={handleClick}
             />
           )}
         </div>
 
-        <div className="flex-between space-x-4">
+        <div className="flex items-center space-x-6">
           <ShoppingCart user={user} />
           {user && <UserMenuDropDown />}
           {!user && (
             <ButtonElement
               title="Login"
-              variant="primary"
               className="auth-button"
               handleClick={() => router.push("/login")}
             />

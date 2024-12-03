@@ -31,7 +31,7 @@ export const userLogin = (formData) => async (dispatch) => {
   } catch (error) {
     setTimeout(() => {
       dispatch({ type: LOGIN_FAILED, payload: error.response.data.message });
-    }, 3000);
+    }, 500);
   }
 };
 
