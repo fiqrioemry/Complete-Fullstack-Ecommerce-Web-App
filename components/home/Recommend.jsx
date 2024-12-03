@@ -11,8 +11,6 @@ const Recommend = () => {
   const { handleShowMore, limit } = useProduct();
   const { products, loading, detail } = useSelector((state) => state.product);
 
-  console.log("PRINT LOG INFO:", products);
-
   return (
     <section className="section-wrapper">
       <div className="section-head">

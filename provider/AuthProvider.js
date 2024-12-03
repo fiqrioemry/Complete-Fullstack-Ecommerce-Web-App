@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }) => {
   const [signInFormData, setSignInFormData] = useState(initialSignInState);
   const [signUpFormData, setSignUpFormData] = useState(initialSignUpState);
 
-  // Handlers
   const handleSignIn = (e) => {
     e.preventDefault();
     dispatch(userLogin(signInFormData));

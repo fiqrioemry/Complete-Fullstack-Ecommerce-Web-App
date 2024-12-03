@@ -9,10 +9,10 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { MdShoppingCart } from "react-icons/md";
 import ImageElement from "../element/ImageElement";
+import formatToRupiah from "@/utils/formatCurrency";
 
 const ShoppingCart = ({ user }) => {
   const { cart } = useSelector((state) => state.cart);
-
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -20,7 +20,7 @@ const ShoppingCart = ({ user }) => {
           <MdShoppingCart className="text-4xl" />
           {cart && (
             <div className="absolute  -top-2 -right-4 rounded-full h-8 w-8 flex-center bg-red-500 text-white">
-              {Math.min(cart.length, 99)}
+              {Math.min(Object.values(cart).flat().length, 99)}
             </div>
           )}
         </div>
@@ -45,23 +45,26 @@ const ShoppingCart = ({ user }) => {
               </div>
             </div>
             <div className="px-2 h-[220px] overflow-y-scroll">
-              {cart.map((item) => (
-                <div className="flex py-2 space-x-4" key={item.id}>
-                  <ImageElement
-                    width={80}
-                    height={80}
-                    path={item.images}
-                    style="borders"
-                    alt="cartimage"
-                  />
-                  <div>
-                    <h3>{item.name}</h3>
-                    <div>
-                      {item.quantity} x Rp. {item.price}
+              {cart !== null &&
+                Object.values(cart)
+                  .flat()
+                  .map((item) => (
+                    <div className="flex py-2 space-x-4" key={item.id}>
+                      <ImageElement
+                        width={80}
+                        height={80}
+                        path={item.images}
+                        style="borders"
+                        alt="cartimage"
+                      />
+                      <div>
+                        <h3>{item.name}</h3>
+                        <div>
+                          {item.quantity} x Rp. {formatToRupiah(item.price)}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
+                  ))}
             </div>
           </div>
         </PopoverContent>

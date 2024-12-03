@@ -26,14 +26,18 @@ export const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     // * GET_CART ------------------------------------------------------------
     case GET_CART_SUCCESS: {
+      const cart = action.payload.cart.reduce((acc, curr) => {
+        acc[curr.storeName] = acc[curr.storeName] || [];
+        acc[curr.storeName].push(curr);
+        return acc;
+      }, {});
       return {
         ...state,
-        cart: action.payload.cart,
+        cart: cart,
       };
     }
 
     // * ADD CART, UPDATE CART, DELETE CART ------------------------------------------------------------
-    case UPDATE_CART_PROCESS:
     case DELETE_CART_PROCESS:
     case ADD_CART_PROCESS:
       return {
@@ -46,7 +50,6 @@ export const cartReducer = (state = initialState, action) => {
       };
 
     case ADD_CART_SUCCESS:
-    case UPDATE_CART_SUCCESS:
     case DELETE_CART_SUCCESS: {
       return {
         ...state,
@@ -59,7 +62,6 @@ export const cartReducer = (state = initialState, action) => {
 
     case GET_CART_FAILED:
     case ADD_CART_FAILED:
-    case UPDATE_CART_FAILED:
     case DELETE_CART_FAILED:
       return {
         ...state,

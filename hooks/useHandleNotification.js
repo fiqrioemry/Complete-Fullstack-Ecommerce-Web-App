@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 function useHandleNotification(success, failed, message, reset) {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (success) {
+    if (success && message !== "") {
       toast.info(message);
     } else if (failed) {
       toast.error(message);

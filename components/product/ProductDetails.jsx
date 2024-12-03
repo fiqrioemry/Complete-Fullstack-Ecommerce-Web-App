@@ -1,10 +1,9 @@
 "use client";
+import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useCart } from "@/provider/CartProvider";
-import ImageElement from "../element/ImageElement";
 import ButtonElement from "../element/ButtonElement";
 import QuantityElement from "../element/QuantityElement";
-import Image from "next/image";
 
 const ProductDetails = ({ links, product }) => {
   const {
@@ -98,14 +97,14 @@ const ProductDetails = ({ links, product }) => {
                   name="add"
                   loading={loading}
                   handleClick={handleAddCart}
-                  style="w-full flex-center"
+                  className="w-full flex-center"
                 />
 
                 <ButtonElement
                   title="checkout"
                   name="checkout"
                   handleClick={handleCheckout}
-                  style="w-full flex-center"
+                  className="w-full flex-center"
                   variant="primary"
                 />
               </div>

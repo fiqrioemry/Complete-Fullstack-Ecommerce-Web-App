@@ -2,15 +2,16 @@
 
 import React from "react";
 import Image from "next/image";
+
 import { useSelector } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/provider/CartProvider";
 import PageLoading from "@/components/common/PageLoading";
 import ButtonElement from "@/components/element/ButtonElement";
 import QuantityElement from "@/components/element/QuantityElement";
 import AlternativePage from "@/components/common/AlternativePage";
-import { useRouter } from "next/navigation";
+import formatToRupiah from "@/utils/formatCurrency";
 
 const Page = () => {
   const router = useRouter();
@@ -20,21 +21,31 @@ const Page = () => {
     handleDelete,
     handleCheck,
     checkoutId,
-    cartGroup,
-    cartIds,
-    totalPrice,
   } = useCart();
   const { cart, loading, loadingItem } = useSelector((state) => state.cart);
 
-  if (loading && !cartGroup) {
-    return <PageLoading />;
+  function isAllCartSelected() {
+    return Object.values(cart)
+      .flat()
+      .map((item) => item.id)
+      .every((item) => checkoutId.includes(item));
   }
 
-  if (!cart) {
+  function countTotalPrice() {
+    const data = Object.values(cart)
+      .flat()
+      .filter((item) => checkoutId.includes(item.id))
+      .reduce((acc, curr) => acc + curr.price * curr.quantity, 0);
+    const total = formatToRupiah(data);
+    return total;
+  }
+
+  if (loading) return <PageLoading />;
+
+  if (!cart)
     return (
       <AlternativePage title="your cart is empty" button="Shop now" path="/" />
     );
-  }
 
   return (
     <section className="page-wrapper">
@@ -53,17 +64,21 @@ const Page = () => {
                   <div className="display-box">
                     <input
                       type="checkbox"
-                      onChange={() => handleCheck(cartIds)}
-                      checked={cartIds.every((item) =>
-                        checkoutId.includes(item)
-                      )}
+                      onChange={() =>
+                        handleCheck(
+                          Object.values(cart)
+                            .flat()
+                            .map((item) => item.id)
+                        )
+                      }
+                      checked={isAllCartSelected()}
                       className="w-5 h-5"
                     />
                     <h2>Select All</h2>
                   </div>
                 </div>
                 <div className="content-wrapper">
-                  {Object.entries(cartGroup).map(([storeName, products]) => {
+                  {Object.entries(cart).map(([storeName, products]) => {
                     const groupIds = products.map((item) => item.id);
                     return (
                       <div className="content-wrapper borders" key={storeName}>
@@ -106,26 +121,23 @@ const Page = () => {
                                 <h2>{item.name}</h2>
                               </div>
                               <div className="flex-center-end">
-                                Rp. {item.price}
+                                {formatToRupiah(item.price)}
                               </div>
-                              <div className="flex-center-end ">
+                              <div className="flex-center-end">
                                 <ButtonElement
                                   title={<FaTrashAlt />}
-                                  style="block text-sm"
                                   loading={loadingItem === item.id}
                                   handleClick={() => handleDelete(item.id)}
-                                  variant="primary"
                                 />
-                                <div className="w-1/2">
-                                  <QuantityElement
-                                    name="update"
-                                    value={item.id}
-                                    handleIncrease={handleIncrease}
-                                    handleDecrease={handleDecrease}
-                                    quantity={item.quantity}
-                                    stock={item.stock}
-                                  />
-                                </div>
+
+                                <QuantityElement
+                                  name="update"
+                                  value={item.id}
+                                  handleIncrease={handleIncrease}
+                                  handleDecrease={handleDecrease}
+                                  quantity={item.quantity}
+                                  stock={item.stock}
+                                />
                               </div>
                             </div>
                           </div>
@@ -142,23 +154,16 @@ const Page = () => {
               <div className="content-wrapper borders p-4">
                 <div className="space-y-4">
                   <h2>Shopping Summary</h2>
-                  <h3>Rp. {totalPrice}</h3>
+                  <h3>{countTotalPrice()}</h3>
                 </div>
 
                 <div>
-                  <Button
-                    variant="primary"
-                    onClick={() => router.push("/cart/shipment")}
-                    className={`${
-                      !checkoutId.length
-                        ? "bg-gray-400 border-gray-400 hover:bg-gray-400 hover:text-white cursor-not-allowed"
-                        : ""
-                    }
-                  w-full`}
-                    disabled={!checkoutId.length}
-                  >
-                    Make a Purchase
-                  </Button>
+                  <ButtonElement
+                    title={"purchase"}
+                    className={"w-full"}
+                    isButtonDisabled={!checkoutId.length}
+                    handleClick={() => router.push("/cart/shipment")}
+                  />
                 </div>
               </div>
             </div>

@@ -15,9 +15,6 @@ import AlternativePage from "@/components/common/AlternativePage";
 const Page = () => {
   const { checkoutId, cartGroup } = useCart();
 
-  console.log(checkoutId);
-  console.log(cartGroup);
-
   if (!cartGroup) {
     return (
       <AlternativePage title="your cart is empty" button="Shop now" path="/" />

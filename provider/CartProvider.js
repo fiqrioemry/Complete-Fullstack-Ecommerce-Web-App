@@ -1,8 +1,8 @@
 "use client";
 
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { usePathname, useRouter } from "next/navigation";
 import useHandleNotification from "@/hooks/useHandleNotification";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
@@ -17,35 +17,12 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const router = useRouter();
-  const pathname = usePathname();
   const dispatch = useDispatch();
-  const [cartIds, setCartIds] = useState([]);
   const [quantity, setQuantity] = useState(1);
-  const [cartGroup, setCartGroup] = useState({});
-  const [totalPrice, setTotalPrice] = useState(0);
   const [checkoutId, setCheckoutId] = useState([]);
   const { user } = useSelector((state) => state.auth);
   const { product } = useSelector((state) => state.product);
-  const { cart, message, success, failed } = useSelector(
-    (state) => state.cart || { cart: [] }
-  );
-
-  const groupByStore = () => {
-    const grouped = cart.reduce((acc, curr) => {
-      acc[curr.storeName] = acc[curr.storeName] || [];
-      acc[curr.storeName].push(curr);
-      return acc;
-    }, {});
-    setCartGroup(grouped);
-    setCartIds(cart.map((item) => item.id));
-  };
-
-  const countTotalPrice = () => {
-    const total = cart
-      .filter((item) => checkoutId.includes(item.id))
-      .reduce((acc, curr) => (acc += curr.price * curr.quantity), 0);
-    setTotalPrice(total);
-  };
+  const { cart, message, success, failed } = useSelector((state) => state.cart);
 
   const handleCheck = (ids) => {
     const isChecked = ids.every((id) => checkoutId.includes(id));
@@ -92,18 +69,7 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) dispatch(getCartItem());
-  }, [user, dispatch, success, message]);
-
-  useEffect(() => {
-    if (cart?.length) {
-      groupByStore();
-      countTotalPrice();
-    }
-  }, [cart, checkoutId]);
-
-  useEffect(() => {
-    setQuantity(1);
-  }, [pathname]);
+  }, [user, success]);
 
   useHandleNotification(success, failed, message, reset);
   return (
@@ -115,11 +81,9 @@ export const CartProvider = ({ children }) => {
         handleAddCart,
         handleDelete,
         quantity,
+        setQuantity,
         handleCheck,
         checkoutId,
-        cartGroup,
-        cartIds,
-        totalPrice,
       }}
     >
       {children}
