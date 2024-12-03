@@ -31,6 +31,7 @@ const initialState = {
   product: [],
   products: [],
   storeProducts: [],
+  searchLoading: false,
   loading: false,
   success: false,
   failed: false,
@@ -41,7 +42,7 @@ export const productReducer = (state = initialState, action) => {
   switch (action.type) {
     // * GET ALL PRODUCTS ------------------------------------------------------------
     case GET_PRODUCT_PROCESS:
-      return { ...state, loading: true };
+      return { ...state, products: [], loading: true };
 
     case GET_PRODUCT_SUCCESS: {
       return {
@@ -54,26 +55,6 @@ export const productReducer = (state = initialState, action) => {
     }
 
     case GET_PRODUCT_FAILED:
-      return {
-        ...state,
-        failed: true,
-        loading: false,
-      };
-
-    // * GET ALL PRODUCTS ------------------------------------------------------------
-    case SEARCH_PROCESS:
-      return { ...state, loading: true };
-
-    case SEARCH_SUCCESS: {
-      return {
-        ...state,
-        success: true,
-        loading: false,
-        search: action.payload.data,
-      };
-    }
-
-    case SEARCH_FAILED:
       return {
         ...state,
         failed: true,
@@ -148,6 +129,8 @@ export const productReducer = (state = initialState, action) => {
         message: action.payload,
       };
     }
+
+    // * SEARCH A PRODUCTS ------------------------------------------------------------
 
     case SEARCH_PROCESS:
       return { ...state, search: null || [], searchLoading: true };

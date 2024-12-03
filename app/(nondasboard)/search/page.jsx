@@ -1,5 +1,6 @@
 "use client";
 import PageNotFound from "@/app/not-found";
+import PageLoading from "@/components/common/PageLoading";
 import ProductCard from "@/components/common/ProductCard";
 import ProductCardLoading from "@/components/common/ProductCardLoading";
 import FilterProducts from "@/components/search/FilterProducts";
@@ -9,7 +10,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 
 const Page = () => {
-  const { handleSearch } = useProduct();
+  const { handleChange } = useProduct();
   const { products, loading, failed, detail } = useSelector(
     (state) => state.product
   );
@@ -34,29 +35,21 @@ const Page = () => {
               <div className="content-wrapper">
                 <div className="flex-center p-4 borders">SORT BY</div>
                 <div className="content-grid-4">
-                  {loading ? (
+                  {!products.length ? (
                     <ProductCardLoading />
-                  ) : failed ? (
-                    <PageNotFound />
                   ) : (
                     <ProductCard products={products} />
                   )}
                 </div>
               </div>
-              {!loading && (
+              {!products.length && (
                 <div className="space-x-2">
                   {[...Array(detail.totalPage)].map((_, index) => (
                     <Button
                       name="page"
                       value={index + 1}
                       disabled={detail.currentPage === index + 1}
-                      onClick={handleSearch}
-                      variant="primary"
-                      className={`${
-                        detail.currentPage === index + 1
-                          ? "bg-white text-primary"
-                          : ""
-                      }`}
+                      onClick={handleChange}
                       key={index}
                     >
                       {index + 1}

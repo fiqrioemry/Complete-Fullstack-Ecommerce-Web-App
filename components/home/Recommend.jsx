@@ -25,13 +25,13 @@ const Recommend = () => {
             <ProductCard products={products} />
           )}
 
-          {products & loading && <ProductCardLoading />}
+          {loading && <ProductCardLoading />}
         </div>
         {detail.totalProduct >= searchInput.limit && (
           <ButtonElement
             title="load more"
             name="limit"
-            value={searchInput.limit + 4}
+            value={searchInput.limit}
             className={"flex-center w-full"}
             handleClick={handleChange}
             isButtonLoading={loading}

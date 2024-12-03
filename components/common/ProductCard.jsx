@@ -16,7 +16,7 @@ const ProductCard = ({ products }) => {
             <Image
               width={200}
               height={200}
-              src={product.image}
+              src="https://images.tokopedia.net/img/cache/500-square/VqbcmM/2024/3/26/f5c29d8a-8c0f-44f1-9300-1192b72b8e54.png.webp?ect=4g"
               alt="product_card"
             />
           </div>

@@ -31,16 +31,16 @@ import callApi from "../../services/index";
 export const getAllProducts =
   ({
     search = "",
+    category = "",
     city = "",
     minPrice = "",
     maxPrice = "",
-    category = "",
     minRating = "",
     maxRating = "",
-    order = "",
     sortBy = "",
-    limit = 8,
+    order = "",
     page,
+    limit = 8,
   } = {}) =>
   async (dispatch) => {
     try {
@@ -49,7 +49,6 @@ export const getAllProducts =
       const response = await callApi.get(
         `/api/product?search=${search}&city=${city}&minPrice=${minPrice}&maxPrice=${maxPrice}&category=${category}&minRating=${minRating}&maxRating=${maxRating}&order=${order}&sortBy=${sortBy}&limit=${limit}&page=${page}`
       );
-      console.log("PRINT LOG INFO:", response);
       dispatch({ type: GET_PRODUCT_SUCCESS, payload: response.data });
     } catch (error) {
       dispatch({

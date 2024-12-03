@@ -31,17 +31,17 @@ export const ProductProvider = ({ children }) => {
   const searchParams = useSearchParams();
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchInput, setSearchInput] = useState({
-    limit: 8,
-    order: "asc",
-    sortBy: "createdAt",
-    city: searchParams.get("city") || "",
     search: searchParams.get("search") || "",
+    category: searchParams.get("category") || "",
+    city: searchParams.get("city") || "",
     minPrice: searchParams.get("minPrice") || "",
     maxPrice: searchParams.get("maxPrice") || "",
-    category: searchParams.get("category") || "",
     maxRating: searchParams.get("maxRating") || "",
     minRating: searchParams.get("minRating") || "",
+    sortBy: "createdAt",
+    order: "asc",
     page: searchParams.get("page") || 1,
+    limit: 8,
   });
 
   const buildQueryParams = useCallback((filters) => {
@@ -56,7 +56,7 @@ export const ProductProvider = ({ children }) => {
     const { name, value } = e.target;
     setSearchInput((prevInput) => ({
       ...prevInput,
-      [name]: value,
+      [name]: name === "limit" ? prevInput.limit + 4 : value,
     }));
   };
 
@@ -71,7 +71,6 @@ export const ProductProvider = ({ children }) => {
     setShowDropdown(false);
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceSearch = useCallback(
     debounce((searchParams) => {
       dispatch(searchProducts(searchParams));
@@ -85,13 +84,16 @@ export const ProductProvider = ({ children }) => {
   }, [dispatch, debounceSearch, searchInput.search]);
 
   useEffect(() => {
+    const query = buildQueryParams(searchInput);
+    if (query) {
+      console.log("PRINT LOG INFO:", query);
+      dispatch(getAllProducts(searchInput));
+    }
+  }, [pathname, params]);
+
+  useEffect(() => {
     if (pathname === "/") {
       dispatch(getAllProducts({ limit: searchInput.limit }));
-    } else if (pathname.includes("/search")) {
-      const query = buildQueryParams(searchInput);
-      if (query) {
-        dispatch(getAllProducts(searchInput));
-      }
     } else if (params.shop) {
       if (params.product) {
         dispatch(getProductDetail(params.product));
@@ -99,7 +101,7 @@ export const ProductProvider = ({ children }) => {
         dispatch(getAllStoreProducts(params.shop));
       }
     }
-  }, [dispatch, searchInput, pathname, params]);
+  }, [dispatch, searchInput.limit, pathname, params]);
 
   useDropdown(dropdownRef, setShowDropdown);
 
